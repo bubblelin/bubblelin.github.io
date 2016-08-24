@@ -1,5 +1,6 @@
 ---
-title: session的序列化异常之关于java.io.WriteAbortedException
+title: 关于session序列化异常
+subtitle: java.io.WriteAbortedException
 date: 2016-08-02 21:56:21
 categories: 编程
 tags: [Java,Exception]
