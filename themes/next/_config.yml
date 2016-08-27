@@ -124,8 +124,9 @@ font:
 social:
   #LinkLabel: Link
   GitHub: https://github.com/bubblelin
-  Twitter: https://twitter.com
+  #Twitter: https://twitter.com
   #Zhihu: http://www.zhihu.com
+  Weibo: http://weibo.com/bubblelin
 
 
 # Social Links Icons
@@ -138,8 +139,8 @@ social_icons:
   # Icon Mappings.
   # KeyMapsToSocalItemKey: NameOfTheIconFromFontAwesome
   GitHub: github
-  Twitter: twitter
-  #Weibo: weibo
+  #Twitter: twitter
+  Weibo: weibo
   #Zhihu: zhihu
 
 
@@ -254,7 +255,7 @@ duoshuo_shortname: bubblelin
 # Baidu Share
 # Available value:
 #    button | slide
-baidushare: true
+baidushare: false
   ##type:
 
 # Share

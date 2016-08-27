@@ -16,10 +16,12 @@ tags: [博客之路,HEXO]
 * 3.在地址栏打开bubblelin.github.io，这样就到达了个人博客网站了！
 
 ### 安装Git和Hexo
-    我用的版本：
-    * Git: Git-2.9.2-64-bit
-    * Hexo: node-v6.3.1-x64
-    一直默认安装就行了
+我用的版本：
+
+* Git: Git-2.9.2-64-bit
+* Hexo: node-v6.3.1-x64
+
+一直默认安装就行了
 
 ### Git常用的命令
 * 1.添加文件到stage
