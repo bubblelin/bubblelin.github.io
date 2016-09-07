@@ -5,7 +5,7 @@ categories: 编程
 tags: [Java]
 ---
 
-> SSH2框架由Struts2，Spring，Hibernate集成。下面记录我在JavaWeb上搭建基于SSH2框架的开发环境。
+> SSH2框架由Struts2.3.15，Spring3.2.0，Hibernate3.6.10集成。下面记录我在JavaWeb上搭建基于SSH2框架的开发环境。
 
 ## jar包
 
@@ -79,7 +79,7 @@ tags: [Java]
     		<dispatcher>REQUEST</dispatcher>
     		<dispatcher>FORWARD</dispatcher>
       </filter-mapping>
-      
+
 ## applicationContext.xml配置
 #### 配置连接池，通过引入外部属性文件配置
     <context:property-placeholder location="classpath:jdbc.properties"/>
