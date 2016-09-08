@@ -5,10 +5,18 @@ type: "about"
 comments: true
 ---
 ## about what ?
->about写点啥呢？博主不喜欢自我介绍...（这个尴尬病，没治了）。好吧，那就不写了，放一首喜欢的歌听听吧~
+>I've been programming since last year and I've loved technology and programming every since.I like to be a geek.Also I like mountain climbing,it's very funny~
+
+## 关于博客名的解释
+
+>因为博主的名字中有个“霖”字，而"bubble"是气泡的意思，球状，又像个0，所以就突然取`bubblelin`为博客名，用前面的翻译就是“0 霖”~
+
+## 音乐是最放松的放松
+
+>喜欢听音乐，喜欢听jay的歌曲，to enjoy
 
 ![Alt text](http://ww3.sinaimg.cn/large/6a3d492dgw1eo14c1qlg3j218g0tktgw.jpg)
-{% aplayer "爱情废柴" "周杰伦" " http://sc1.111ttt.com/2016/1/06/24/199240143042.mp3" "autoplay" %}
+{% aplayer "爱情废柴" "周杰伦" " http://sc1.111ttt.com/2016/1/06/24/199240143042.mp3" %}
 
 ## 歌词精选
 
