@@ -64,3 +64,4 @@ $ hexo server
 $ hexo deploy
 ```
 备注：hexo命令部署到远程Github，应部署到master分支，git命令推送源码到分支hexo上
+推荐教程：(Hexo 搭建博客-基础配置篇 - 简书)[http://www.jianshu.com/p/df3edc4286d2]

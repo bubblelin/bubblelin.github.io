@@ -46,6 +46,9 @@ highlight:
 # Category & Tag
 default_category: uncategorized
 category_map:
+  编程:programming
+  hexo:hexo
+  感想:thinking
 tag_map:
 
 # Date / Time format
