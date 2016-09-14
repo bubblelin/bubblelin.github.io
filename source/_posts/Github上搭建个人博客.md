@@ -15,53 +15,68 @@ tags: [博客之路,HEXO]
 * 2.New repository,命名为bubblelin.github.io
 * 3.在地址栏打开bubblelin.github.io，这样就到达了个人博客网站了！
 
-### 安装Git和Hexo
+### 安装Git和Node
 我用的版本：
 
 * Git: Git-2.9.2-64-bit
-* Hexo: node-v6.3.1-x64
+* Node: node-v6.3.1-x64
 
 一直默认安装就行了
 
 ### Git常用的命令
+
+* 配置用户信息
+``` bash
+git config --global user.name "userName"
+git config --global user.email "emailAddress"
+```
+
 * 1.添加文件到stage
 ``` bash
 $ git add
 ```
+
 * 2.查询stage或版本库里的文件有无改动
 ``` bash
 $ git status
 ```
+
 * 3.提交文件到git版本库
 ``` bash
 $ git commit
 ```
+
 * 4.关联一个远程库
 ``` bash
 $ git remote add origin https://github.com/bubblelin/bubblelin.github.io.git
 ```
+
 * 5.第一次推送，以后推送，可以没有‘-u’
 ``` bash
 $ git push -u origin master
 ```
-* ...
+
 
 ### Hexo常用的命令
 * 1.在source目录下创建新博客
 ``` bash
 $ hexo new "My New Post"
 ```
+
 * 2.生成博客
 ``` bash
 $ hexo generate
 ```
+
 * 3.部署本地服务器
 ``` bash
 $ hexo server
 ```
+
 * 4.部署到远程GitHub
 ``` bash
 $ hexo deploy
 ```
+
 备注：hexo命令部署到远程Github，应部署到master分支，git命令推送源码到分支hexo上
 推荐教程：(Hexo 搭建博客-基础配置篇 - 简书)[http://www.jianshu.com/p/df3edc4286d2]
