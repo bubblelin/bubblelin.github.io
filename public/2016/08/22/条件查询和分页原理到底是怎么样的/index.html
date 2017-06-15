@@ -354,7 +354,7 @@
       
 
       
-        <script src="/assets/js/DPlayer.min.js"> </script><script src="/assets/js/APlayer.min.js"> </script><h3 id="条件查询–准备"><a href="#条件查询–准备" class="headerlink" title="条件查询–准备"></a>条件查询–准备</h3><h4 id="条件查询的SQL语句："><a href="#条件查询的SQL语句：" class="headerlink" title="条件查询的SQL语句："></a>条件查询的SQL语句：</h4><p>比如下面的语句，其中条件一表示columnName1关键字查询，条件二表示columnName2取值大于xxx</p>
+        <script src="/assets/js/APlayer.min.js"> </script><script src="/assets/js/DPlayer.min.js"> </script><h3 id="条件查询–准备"><a href="#条件查询–准备" class="headerlink" title="条件查询–准备"></a>条件查询–准备</h3><h4 id="条件查询的SQL语句："><a href="#条件查询的SQL语句：" class="headerlink" title="条件查询的SQL语句："></a>条件查询的SQL语句：</h4><p>比如下面的语句，其中条件一表示columnName1关键字查询，条件二表示columnName2取值大于xxx</p>
 <figure class="highlight sql"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">select</span> t.* <span class="keyword">from</span> tableName t <span class="keyword">where</span> t.columnName1 <span class="keyword">like</span> <span class="string">'%M%'</span> <span class="keyword">and</span> columnName2 &gt; xxx <span class="keyword">and</span> ...</div></pre></td></tr></table></figure>
 <h4 id="实现通用的sql语句的查询"><a href="#实现通用的sql语句的查询" class="headerlink" title="实现通用的sql语句的查询"></a>实现通用的sql语句的查询</h4><p>实现通用的sql语句的查询需要解决两部分的封装：</p>
 <ul>
