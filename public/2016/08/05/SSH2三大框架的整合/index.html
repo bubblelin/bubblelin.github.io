@@ -1,0 +1,896 @@
+<!doctype html>
+
+
+
+  
+
+
+
+<html class="theme-next muse use-motion">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/vendors/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/vendors/font-awesome/css/font-awesome.min.css?v=4.4.0" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.0.1" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="Java," />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.0.1" />
+
+
+
+
+
+
+<meta name="description" content="SSH2框架由Struts2.3.15，Spring3.2.0，Hibernate3.6.10集成。下面记录我在JavaWeb上搭建基于SSH2框架的开发环境。
+
+jar包Struts2用到的jar包
+asm-3.3.jar
+asm-commons-3.3.jar
+asm-tree-3.3.jar
+commons-fileupload-1.3.jar
+commons-io-2.0.1.jar">
+<meta property="og:type" content="article">
+<meta property="og:title" content="SSH2三大框架的整合">
+<meta property="og:url" content="https://bubblelin.github.io/2016/08/05/SSH2三大框架的整合/index.html">
+<meta property="og:site_name" content="Bubblelin's blog">
+<meta property="og:description" content="SSH2框架由Struts2.3.15，Spring3.2.0，Hibernate3.6.10集成。下面记录我在JavaWeb上搭建基于SSH2框架的开发环境。
+
+jar包Struts2用到的jar包
+asm-3.3.jar
+asm-commons-3.3.jar
+asm-tree-3.3.jar
+commons-fileupload-1.3.jar
+commons-io-2.0.1.jar">
+<meta property="og:updated_time" content="2016-08-27T04:44:28.325Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="SSH2三大框架的整合">
+<meta name="twitter:description" content="SSH2框架由Struts2.3.15，Spring3.2.0，Hibernate3.6.10集成。下面记录我在JavaWeb上搭建基于SSH2框架的开发环境。
+
+jar包Struts2用到的jar包
+asm-3.3.jar
+asm-commons-3.3.jar
+asm-tree-3.3.jar
+commons-fileupload-1.3.jar
+commons-io-2.0.1.jar">
+
+
+
+<script type="text/javascript" id="hexo.configuration">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    scheme: 'Muse',
+    sidebar: {"position":"left","display":"post"},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: undefined,
+      author: '博主'
+    }
+  };
+</script>
+
+
+
+
+  <link rel="canonical" href="https://bubblelin.github.io/2016/08/05/SSH2三大框架的整合/"/>
+
+  <title> SSH2三大框架的整合 | Bubblelin's blog </title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+
+
+
+  <script type="text/javascript">
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "//hm.baidu.com/hm.js?227ebbb1b711ccb58e3648ac7440c2c3";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container one-collumn sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-meta ">
+  
+
+  <div class="custom-logo-site-title">
+    <a href="/"  class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <span class="site-title">Bubblelin's blog</span>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+  <p class="site-subtitle">编程与生活</p>
+</div>
+
+<div class="site-nav-toggle">
+  <button>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+  </button>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-commonweal">
+          <a href="/404.html" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-heartbeat"></i> <br />
+            
+            公益404
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                SSH2三大框架的整合
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">发表于</span>
+            <time itemprop="dateCreated" datetime="2016-08-05T23:56:21+08:00" content="2016-08-05">
+              2016-08-05
+            </time>
+          </span>
+
+          
+            <span class="post-category" >
+              &nbsp; | &nbsp;
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+              
+                <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
+                  <a href="/categories/编程/" itemprop="url" rel="index">
+                    <span itemprop="name">编程</span>
+                  </a>
+                </span>
+
+                
+                
+
+              
+            </span>
+          
+
+          
+            
+          
+
+			
+			<span>&nbsp; | &nbsp;
+			<span id="busuanzi_value_page_pv" ></span>次阅读
+			</span>
+			
+
+          
+
+          
+          
+
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <script src="/assets/js/DPlayer.min.js"> </script><script src="/assets/js/APlayer.min.js"> </script><blockquote>
+<p>SSH2框架由Struts2.3.15，Spring3.2.0，Hibernate3.6.10集成。下面记录我在JavaWeb上搭建基于SSH2框架的开发环境。</p>
+</blockquote>
+<h2 id="jar包"><a href="#jar包" class="headerlink" title="jar包"></a>jar包</h2><h3 id="Struts2用到的jar包"><a href="#Struts2用到的jar包" class="headerlink" title="Struts2用到的jar包"></a>Struts2用到的jar包</h3><ul>
+<li>asm-3.3.jar</li>
+<li>asm-commons-3.3.jar</li>
+<li>asm-tree-3.3.jar</li>
+<li>commons-fileupload-1.3.jar</li>
+<li>commons-io-2.0.1.jar</li>
+<li>commons-lang3-3.1.jar</li>
+<li>commons-logging-1.1.3.jar</li>
+<li>freemarker-2.3.19.jar</li>
+<li>javassist-3.11.0.GA.jar</li>
+<li>log4j-1.2.17.jar</li>
+<li>ognl-3.0.6.jar</li>
+<li>struts2-core-2.3.15.3.jar</li>
+<li>struts2-json-plugin-2.3.15.3.jar</li>
+<li>struts2-spring-plugin-2.3.15.3.jar</li>
+<li>xwork-core-2.3.15.3.jar</li>
+</ul>
+<h3 id="Spring用到的jar包"><a href="#Spring用到的jar包" class="headerlink" title="Spring用到的jar包"></a>Spring用到的jar包</h3><ul>
+<li>com.springsource.org.aopalliance-1.0.0.jar</li>
+<li>com.springsource.org.apache.commons.logging-1.1.1.jar</li>
+<li>com.springsource.org.apache.log4j-1.2.15.jar</li>
+<li>com.springsource.org.aspectj.weaver-1.6.8.RELEASE.jar</li>
+<li>spring-aop-3.2.0.RELEASE.jar</li>
+<li>spring-aspects-3.2.0.RELEASE.jar</li>
+<li>spring-beans-3.2.0.RELEASE.jar</li>
+<li>spring-context-3.2.0.RELEASE.jar</li>
+<li>spring-core-3.2.0.RELEASE.jar</li>
+<li>spring-expression-3.2.0.RELEASE.jar</li>
+<li>spring-jdbc-3.2.0.RELEASE.jar</li>
+<li>spring-orm-3.2.0.RELEASE.jar</li>
+<li>spring-test-3.2.0.RELEASE.jar</li>
+<li>spring-tx-3.2.0.RELEASE.jar</li>
+<li>spring-web-3.2.0.RELEASE.jar</li>
+</ul>
+<h3 id="Hibernate用到的jar包"><a href="#Hibernate用到的jar包" class="headerlink" title="Hibernate用到的jar包"></a>Hibernate用到的jar包</h3><ul>
+<li>antlr-2.7.6.jar</li>
+<li>commons-collections-3.1.jar</li>
+<li>dom4j-1.6.1.jar</li>
+<li>hibernate3.jar</li>
+<li>hibernate-jpa-2.0-api-1.0.1.Final.jar</li>
+<li>javassist-3.12.0.GA.jar</li>
+<li>jta-1.1.jar</li>
+<li>slf4j-api-1.6.1.jar</li>
+<li>slf4j-log4j12-1.7.2.jar</li>
+</ul>
+<h3 id="MySQL连接用到的jar包"><a href="#MySQL连接用到的jar包" class="headerlink" title="MySQL连接用到的jar包"></a>MySQL连接用到的jar包</h3><ul>
+<li>c3p0-0.9.1.jar</li>
+<li>mysql-connector-java-5.0.4-bin.jar</li>
+</ul>
+<h2 id="web-xml配置"><a href="#web-xml配置" class="headerlink" title="web.xml配置"></a>web.xml配置</h2><h4 id="配置Spring的核心监听器"><a href="#配置Spring的核心监听器" class="headerlink" title="配置Spring的核心监听器"></a>配置Spring的核心监听器</h4><pre><code>&lt;listener&gt;
+  &lt;listener-class&gt;org.springframework.web.context.ContextLoaderListener&lt;/listener-class&gt;
+&lt;/listener&gt;
+</code></pre><h4 id="配置全局初始化参数"><a href="#配置全局初始化参数" class="headerlink" title="配置全局初始化参数"></a>配置全局初始化参数</h4><pre><code>&lt;context-param&gt;
+        &lt;param-name&gt;contextConfigLocation&lt;/param-name&gt;
+        &lt;param-value&gt;classpath:applicationContext.xml&lt;/param-value&gt;
+&lt;/context-param&gt;
+</code></pre><h4 id="配置Struts2的核心过滤器"><a href="#配置Struts2的核心过滤器" class="headerlink" title="配置Struts2的核心过滤器"></a>配置Struts2的核心过滤器</h4><pre><code>&lt;filter&gt;
+        &lt;filter-name&gt;struts2&lt;/filter-name&gt;
+        &lt;filter-class&gt;org.apache.struts2.dispatcher.ng.filter.StrutsPrepareAndExecuteFilter&lt;/filter-class&gt;
+    &lt;/filter&gt;
+    &lt;filter-mapping&gt;
+        &lt;filter-name&gt;struts2&lt;/filter-name&gt;
+        &lt;url-pattern&gt;/* &lt;/url-pattern&gt;
+        &lt;dispatcher&gt;REQUEST&lt;/dispatcher&gt;
+        &lt;dispatcher&gt;FORWARD&lt;/dispatcher&gt;
+  &lt;/filter-mapping&gt;
+</code></pre><h2 id="applicationContext-xml配置"><a href="#applicationContext-xml配置" class="headerlink" title="applicationContext.xml配置"></a>applicationContext.xml配置</h2><h4 id="配置连接池，通过引入外部属性文件配置"><a href="#配置连接池，通过引入外部属性文件配置" class="headerlink" title="配置连接池，通过引入外部属性文件配置"></a>配置连接池，通过引入外部属性文件配置</h4><pre><code>&lt;context:property-placeholder location=&quot;classpath:jdbc.properties&quot;/&gt;
+    &lt;bean id=&quot;dataSource&quot; class=&quot;com.mchange.v2.c3p0.ComboPooledDataSource&quot;&gt;
+        &lt;property name=&quot;driverClass&quot; value=&quot;${jdbc.driver}&quot;/&gt;
+        &lt;property name=&quot;jdbcUrl&quot; value=&quot;${jdbc.url}&quot;/&gt;
+        &lt;property name=&quot;user&quot; value=&quot;${jdbc.user}&quot;/&gt;
+        &lt;property name=&quot;password&quot; value=&quot;${jdbc.password}&quot;/&gt;
+&lt;/bean&gt;
+</code></pre><h4 id="配置Hibernate的相关属性信息"><a href="#配置Hibernate的相关属性信息" class="headerlink" title="配置Hibernate的相关属性信息"></a>配置Hibernate的相关属性信息</h4><pre><code>&lt;bean id=&quot;sessionFactory&quot; class=&quot;org.springframework.orm.hibernate3.LocalSessionFactoryBean&quot;&gt;
+        &lt;!-- 注入连接池 --&gt;
+        &lt;property name=&quot;dataSource&quot; ref=&quot;dataSource&quot;/&gt;
+        &lt;!-- 配置Hibernate的其他属性 --&gt;
+        &lt;property name=&quot;hibernateProperties&quot;&gt;
+            &lt;props&gt;
+                &lt;prop key=&quot;hibernate.dialect&quot;&gt;org.hibernate.dialect.MySQLDialect&lt;/prop&gt;
+                &lt;prop key=&quot;hibernate.show_sql&quot;&gt;true&lt;/prop&gt;
+                &lt;prop key=&quot;hibernate.format_sql&quot;&gt;true&lt;/prop&gt;
+                &lt;prop key=&quot;hibernate.connection.autocommit&quot;&gt;false&lt;/prop&gt;
+                &lt;prop key=&quot;hibernate.hbm2ddl.auto&quot;&gt;update&lt;/prop&gt;
+        &lt;/props&gt;
+&lt;/property&gt;
+&lt;!-- 配置Hibernate的映射文件 --&gt;
+&lt;property name=&quot;mappingResources&quot;&gt;
+            &lt;list&gt;
+                &lt;value&gt;com/yanlin/shop/user/vo/User.hbm.xml&lt;/value&gt;
+                &lt;value&gt;com/yanlin/shop/category/vo/Category.hbm.xml&lt;/value&gt;
+                &lt;value&gt;com/yanlin/shop/product/vo/Product.hbm.xml&lt;/value&gt;
+                &lt;value&gt;com/yanlin/shop/categorysecond/vo/CategorySecond.hbm.xml&lt;/value&gt;
+                &lt;value&gt;com/yanlin/shop/order/vo/Order.hbm.xml&lt;/value&gt;
+                &lt;value&gt;com/yanlin/shop/order/vo/OrderItem.hbm.xml&lt;/value&gt;
+                &lt;value&gt;com/yanlin/shop/adminuser/vo/AdminUser.hbm.xml&lt;/value&gt;
+            &lt;/list&gt;
+    &lt;/property&gt;
+&lt;/bean&gt;
+</code></pre><h4 id="事务管理器的配置"><a href="#事务管理器的配置" class="headerlink" title="事务管理器的配置"></a>事务管理器的配置</h4><pre><code>&lt;bean id=&quot;transactionManager&quot; class=&quot;org.springframework.orm.hibernate3.HibernateTransactionManager&quot;&gt;
+        &lt;property name=&quot;sessionFactory&quot; ref=&quot;sessionFactory&quot;/&gt;
+&lt;/bean&gt;
+</code></pre><h4 id="开启注解事务"><a href="#开启注解事务" class="headerlink" title="开启注解事务"></a>开启注解事务</h4><pre><code>&lt;tx:annotation-driven transaction-manager=&quot;transactionManager&quot;/&gt;
+</code></pre><h4 id="Action的配置"><a href="#Action的配置" class="headerlink" title="Action的配置"></a>Action的配置</h4><pre><code>&lt;bean id=&quot;xxxAction&quot; class=&quot;xxx.action.XxxAction&quot; scope=&quot;prototype&quot;&gt;
+  &lt;property name=&quot;xxxService&quot; ref=&quot;xxxService&quot;/&gt;
+&lt;/bean&gt;
+</code></pre><h4 id="Service的配置"><a href="#Service的配置" class="headerlink" title="Service的配置"></a>Service的配置</h4><pre><code>&lt;bean id=&quot;xxxService&quot; class=&quot;xxx.service.XxxService&quot;&gt;
+        &lt;property name=&quot;xxxDao&quot; ref=&quot;xxxDao&quot;/&gt;
+&lt;/bean&gt;
+</code></pre><h4 id="Dao的配置"><a href="#Dao的配置" class="headerlink" title="Dao的配置"></a>Dao的配置</h4><pre><code>&lt;bean id=&quot;xxxDao&quot; class=&quot;xxx.dao.XxxDao&quot;&gt;
+        &lt;property name=&quot;sessionFactory&quot; ref=&quot;sessionFactory&quot;/&gt;
+&lt;/bean&gt;
+</code></pre><h2 id="外部属性文件配置-jdbc-properties"><a href="#外部属性文件配置-jdbc-properties" class="headerlink" title="外部属性文件配置:jdbc.properties"></a>外部属性文件配置:jdbc.properties</h2><pre><code>jdbc.driver=com.mysql.jdbc.Driver
+jdbc.url=jdbc:mysql:///shop
+jdbc.user=root
+jdbc.password=admin
+</code></pre><h2 id="Struts-xml的配置"><a href="#Struts-xml的配置" class="headerlink" title="Struts.xml的配置"></a>Struts.xml的配置</h2><pre><code>&lt;struts&gt;
+    &lt;constant name=&quot;struts.devMode&quot; value=&quot;false&quot; /&gt;
+
+    &lt;package name=&quot;shop&quot; namespace=&quot;/&quot; extends=&quot;struts-default&quot;&gt;
+    &lt;action name=&quot;xx_*&quot; class=&quot;&quot; method=&quot;{1}&quot;&gt;
+      &lt;result name=&quot;success&quot;&gt;/xxx.jsp&lt;/result&gt;
+    &lt;/action&gt;
+  &lt;/package&gt;
+&lt;/struts&gt;
+</code></pre><h2 id="配置log4j-properties"><a href="#配置log4j-properties" class="headerlink" title="配置log4j.properties"></a>配置log4j.properties</h2><pre><code>### direct log messages to stdout ###
+log4j.appender.stdout=org.apache.log4j.ConsoleAppender
+log4j.appender.stdout.Target=System.out
+log4j.appender.stdout.layout=org.apache.log4j.PatternLayout
+log4j.appender.stdout.layout.ConversionPattern=%d{ABSOLUTE} %5p %c{1}:%L - %m%n
+
+### direct messages to file mylog.log ###
+log4j.appender.file=org.apache.log4j.FileAppender
+log4j.appender.file.File=c:/mylog.log
+log4j.appender.file.layout=org.apache.log4j.PatternLayout
+log4j.appender.file.layout.ConversionPattern=%d{ABSOLUTE} %5p %c{1}:%L - %m%n
+
+### set log levels - for more verbose logging change &apos;info&apos; to &apos;debug&apos; ###
+
+log4j.rootLogger=info, stdout
+</code></pre>
+      
+    </div>
+
+    <div>
+      
+        
+<div id="wechat_subscriber" style="display: block; padding: 10px 0; margin: 20px auto; width: 100%; text-align: center">
+    <img id="wechat_subscriber_qcode" src="/images/wechat-qcode.jpg" alt="Bubblelin wechat" style="width: 200px; max-width: 100%;"/>
+    <div>欢迎订阅微信公众号!</div>
+</div>
+
+
+      
+    </div>
+
+    <div>
+      
+        
+  <div style="padding: 10px 0; margin: 20px auto; width: 90%; text-align: center;">
+    <div>坚持原创技术分享，您的支持将鼓励我继续创作！</div>
+    <button id="rewardButton" disable="enable" onclick="var qr = document.getElementById('QR'); if (qr.style.display === 'none') {qr.style.display='block';} else {qr.style.display='none'}">
+      <span>赏</span>
+    </button>
+    <div id="QR" style="display: none;">
+      
+        <div id="wechat" style="display: inline-block">
+          <img id="wechat_qr" src="/images/wechat-reward-image.jpg" alt="Bubblelin WeChat Pay"/>
+          <p>微信打赏</p>
+        </div>
+      
+      
+    </div>
+  </div>
+
+
+      
+    </div>
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/Java/" rel="tag">#Java</a>
+          
+        </div>
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2016/08/02/关于java-io-WriteAbortedException/" rel="next" title="关于session序列化异常">
+                <i class="fa fa-chevron-left"></i> 关于session序列化异常
+              </a>
+            
+          </div>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2016/08/10/文件上传（一）/" rel="prev" title="简单实例之文件上传（一）,利用commons-fileupload">
+                简单实例之文件上传（一）,利用commons-fileupload <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+        <!-- JiaThis Button BEGIN -->
+<!-- <div class="jiathis_style">
+  <a class="jiathis_button_tsina"></a>
+  <a class="jiathis_button_tqq"></a>
+  <a class="jiathis_button_weixin"></a>
+  <a class="jiathis_button_cqq"></a>
+  <a class="jiathis_button_douban"></a>
+  <a class="jiathis_button_renren"></a>
+  <a class="jiathis_button_qzone"></a>
+  <a class="jiathis_button_kaixin001"></a>
+  <a class="jiathis_button_copy"></a>
+  <a href="http://www.jiathis.com/share" class="jiathis jiathis_txt jiathis_separator jtico jtico_jiathis" target="_blank"></a>
+  <a class="jiathis_counter_style"></a>
+</div>
+<script type="text/javascript" >
+  var jiathis_config={
+    hideMore:false
+  }
+</script>
+<script type="text/javascript" src="http://v3.jiathis.com/code/jia.js" charset="utf-8"></script> -->
+<!-- JiaThis Button END -->
+<!-- JiaThis Button BEGIN -->
+<div class="jiathis_style"><span class="jiathis_txt">分享到：</span>
+<a class="jiathis_button_tsina"></a>
+<a class="jiathis_button_weixin"></a>
+<a class="jiathis_button_cqq"></a>
+<a href="http://www.jiathis.com/share" class="jiathis jiathis_txt jiathis_separator jtico jtico_jiathis" target="_blank"></a>
+<a class="jiathis_counter_style"></a>
+</div>
+<script type="text/javascript" >
+var jiathis_config={
+	siteNum:5,
+	sm:"weixin,qzone,tsina,fb,twitter",
+	summary:"",
+	pic:"https://bubblelin.github.io/images/avatar.png",
+	ralateuid:{
+		"tsina":"雨亦奇lin"
+	},
+	shortUrl:true,
+	hideMore:false
+}
+</script>
+<script type="text/javascript" src="http://v3.jiathis.com/code_mini/jia.js" charset="utf-8"></script>
+<!-- JiaThis Button END -->
+
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel ">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/images/avatar.png"
+               alt="Bubblelin" />
+          <p class="site-author-name" itemprop="name">Bubblelin</p>
+          <p class="site-description motion-element" itemprop="description">A  little  effort  every  day</p>
+        </div>
+        <nav class="site-state motion-element">
+          <div class="site-state-item site-state-posts">
+            <a href="/archives">
+              <span class="site-state-item-count">17</span>
+              <span class="site-state-item-name">日志</span>
+            </a>
+          </div>
+
+          
+            <div class="site-state-item site-state-categories">
+              <a href="/categories">
+                <span class="site-state-item-count">4</span>
+                <span class="site-state-item-name">分类</span>
+              </a>
+            </div>
+          
+
+          
+            <div class="site-state-item site-state-tags">
+              <a href="/tags">
+                <span class="site-state-item-count">6</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+            
+              <span class="links-of-author-item">
+                <a href="https://github.com/bubblelin" target="_blank" title="GitHub">
+                  
+                    <i class="fa fa-fw fa-github"></i>
+                  
+                  GitHub
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://weibo.com/bubblelin" target="_blank" title="Weibo">
+                  
+                    <i class="fa fa-fw fa-weibo"></i>
+                  
+                  Weibo
+                </a>
+              </span>
+            
+          
+        </div>
+
+        
+        
+          <div class="cc-license motion-element" itemprop="license">
+            <a href="https://creativecommons.org/licenses/by-nc/4.0/" class="cc-opacity" target="_blank">
+              <img src="/images/cc-by-nc.svg" alt="Creative Commons" />
+            </a>
+          </div>
+        
+
+        
+        
+
+      </section>
+
+      
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+            
+              
+            
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#jar包"><span class="nav-number">1.</span> <span class="nav-text">jar包</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Struts2用到的jar包"><span class="nav-number">1.1.</span> <span class="nav-text">Struts2用到的jar包</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Spring用到的jar包"><span class="nav-number">1.2.</span> <span class="nav-text">Spring用到的jar包</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Hibernate用到的jar包"><span class="nav-number">1.3.</span> <span class="nav-text">Hibernate用到的jar包</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#MySQL连接用到的jar包"><span class="nav-number">1.4.</span> <span class="nav-text">MySQL连接用到的jar包</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#web-xml配置"><span class="nav-number">2.</span> <span class="nav-text">web.xml配置</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#配置Spring的核心监听器"><span class="nav-number">2.0.1.</span> <span class="nav-text">配置Spring的核心监听器</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#配置全局初始化参数"><span class="nav-number">2.0.2.</span> <span class="nav-text">配置全局初始化参数</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#配置Struts2的核心过滤器"><span class="nav-number">2.0.3.</span> <span class="nav-text">配置Struts2的核心过滤器</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#applicationContext-xml配置"><span class="nav-number">3.</span> <span class="nav-text">applicationContext.xml配置</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#配置连接池，通过引入外部属性文件配置"><span class="nav-number">3.0.1.</span> <span class="nav-text">配置连接池，通过引入外部属性文件配置</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#配置Hibernate的相关属性信息"><span class="nav-number">3.0.2.</span> <span class="nav-text">配置Hibernate的相关属性信息</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#事务管理器的配置"><span class="nav-number">3.0.3.</span> <span class="nav-text">事务管理器的配置</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#开启注解事务"><span class="nav-number">3.0.4.</span> <span class="nav-text">开启注解事务</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Action的配置"><span class="nav-number">3.0.5.</span> <span class="nav-text">Action的配置</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Service的配置"><span class="nav-number">3.0.6.</span> <span class="nav-text">Service的配置</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Dao的配置"><span class="nav-number">3.0.7.</span> <span class="nav-text">Dao的配置</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#外部属性文件配置-jdbc-properties"><span class="nav-number">4.</span> <span class="nav-text">外部属性文件配置:jdbc.properties</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Struts-xml的配置"><span class="nav-number">5.</span> <span class="nav-text">Struts.xml的配置</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#配置log4j-properties"><span class="nav-number">6.</span> <span class="nav-text">配置log4j.properties</span></a></li></ol></div>
+            
+          </div>
+        </section>
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy;  2015 - 
+  <span itemprop="copyrightYear">2017</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Bubblelin</span>
+</div>
+
+<script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+本站访问总量 <span id="busuanzi_value_site_pv"></span> &nbsp|&nbsp
+您是第<span id="busuanzi_value_site_uv"></span>个小伙伴！
+
+        
+
+        
+      </div>
+    </footer>
+
+    <div class="back-to-top">
+      <i class="fa fa-arrow-up"></i>
+    </div>
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+  
+  <script type="text/javascript" src="/vendors/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/vendors/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/vendors/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/vendors/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/vendors/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/vendors/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.0.1"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.0.1"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.0.1"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.0.1"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.0.1"></script>
+
+
+
+  
+
+
+
+  
+
+
+
+
+  
+  
+
+  
+
+  
+
+  
+<script type="text/javascript" async src="//push.zhanzhang.baidu.com/push.js">
+</script>
+
+
+  
+    <script type="text/javascript"
+    color="0,0,255" opacity='0.7' zIndex="-2" count="99" src="//cdn.bootcss.com/canvas-nest.js/1.0.0/canvas-nest.min.js"></script>
+  
+
+  <a href="https://github.com/bubblelin">
+      <img style="position: absolute; top: 0; left: 0; border: 0;"
+      src="/images/68747470733a2f2f73332e616d617a6f6e6177732e636f6d2f6769746875622f726962626f6e732f666f726b6d655f6c6566745f677265656e5f3030373230302e706e67.png"
+      alt="Fork me on GitHub"
+      data-canonical-src="/images/forkme_left_green_007200.png">
+  </a>
+
+</body>
+</html>

@@ -1,13 +1,8 @@
-# ---------------------------------------------------------------
-# Site Information Settings
-# ---------------------------------------------------------------
-
 # Put your favicon.ico into `hexo-site/source/` directory.
 favicon: /favicon.ico
 
-
 # Set default keywords (Use a comma to separate)
-keywords: "github, Java,bubblelin"
+keywords: "Github, Java,Bubblelin"
 
 # Set rss to false to disable feed link.
 # Leave rss as empty to use site's feed link.
@@ -21,7 +16,6 @@ since: 2015
 # See: https://support.google.com/webmasters/answer/139066
 # Tips: Before you open this tag, remeber set up your URL in hexo _config.yml ( ex. url: http://yourdomain.com )
 canonical: true
-
 
 # ---------------------------------------------------------------
 # Menu Settings
@@ -52,17 +46,14 @@ menu_icons:
   archives: archive
   commonweal: heartbeat
 
-
-
-
 # ---------------------------------------------------------------
 # Scheme Settings
 # ---------------------------------------------------------------
 
 # Schemes
-#scheme: Muse
-#scheme: Mist
-scheme: Pisces
+scheme: Muse
+# scheme: Mist
+# scheme: Pisces
 
 
 # ---------------------------------------------------------------
@@ -110,13 +101,9 @@ font:
     external: true
     family:
 
-
-
-
 # ---------------------------------------------------------------
 # Sidebar Settings
 # ---------------------------------------------------------------
-
 
 # Social Links
 # Key is the link label showing to end users.
@@ -207,7 +194,7 @@ custom_logo:
 # Available value:
 #    normal | night | night eighties | night blue | night bright
 # https://github.com/chriskempson/tomorrow-theme
-highlight_theme: night bright
+highlight_theme: normal
 
 
 # Automatically scroll page to section which is under <!-- more --> mark.
@@ -219,15 +206,6 @@ scroll_to_more: true
 auto_excerpt:
   enable: true
   length: 150
-
-
-# Wechat Subscriber
-#wechat_subscriber:
-  #enabled: true
-  #qcode: /path/to/your/wechatqcode ex. /uploads/wechat-qcode.jpg
-  #description: ex. subscribe to my blog by scanning my public wechat account
-
-
 
 
 # ---------------------------------------------------------------
@@ -246,11 +224,6 @@ mathjax:
 # Baidu Analytics ID
 baidu_analytics: 227ebbb1b711ccb58e3648ac7440c2c3
 
-# Duoshuo ShortName
-duoshuo_shortname: bubblelin
-
-# Disqus
-#disqus_shortname:
 
 # Baidu Share
 # Available value:
@@ -259,11 +232,8 @@ baidushare: false
   ##type:
 
 # Share
-#jiathis:
+jiathis: true
 #add_this_id:
-
-# Share
-duoshuo_share: true
 
 # Google Webmaster tools verification setting
 # See: https://www.google.com/webmasters/
@@ -277,33 +247,23 @@ duoshuo_share: true
 #cnzz_siteid:
 
 
-# Make duoshuo show UA
-# user_id must NOT be null when admin_enable is true!
-# you can visit http://dev.duoshuo.com get duoshuo user id.
-duoshuo_info:
-  ua_enable: true
-  admin_enable: false
-  user_id: 0
-  admin_nickname: Author
-
-
 # Facebook SDK Support.
 # https://github.com/iissnan/hexo-theme-next/pull/410
-facebook_sdk:
-  enable: false
-  app_id:       #<app_id>
-  fb_admin:     #<user_id>
-  like_button:  #true
-  webmaster:    #true
+# facebook_sdk:
+#   enable: false
+#   app_id:       #<app_id>
+#   fb_admin:     #<user_id>
+#   like_button:  #true
+#   webmaster:    #true
 
 # Facebook comments plugin
 # This plugin depends on Facebook SDK.
 # If facebook_sdk.enable is false, Facebook comments plugin is unavailable.
-facebook_comments_plugin:
-  enable: false
-  num_of_posts: 10  # min posts num is 1
-  width: 100%       # default width is 550px
-  scheme: light     # default scheme is light (light or dark)
+# facebook_comments_plugin:
+#   enable: false
+#   num_of_posts: 10  # min posts num is 1
+#   width: 100%       # default width is 550px
+#   scheme: light     # default scheme is light (light or dark)
 
 
 # Show number of visitors to each article.
@@ -400,3 +360,20 @@ images: images
 
 # Theme version
 version: 5.0.1
+
+# --------------------------------------------------------------
+# background settings
+# --------------------------------------------------------------
+# add canvas-nest effect
+# see detail from https://github.com/hustcc/canvas-nest.js
+canvas_nest: true
+
+# 开启打赏功能
+reward_comment: 坚持原创技术分享，您的支持将鼓励我继续创作！
+wechatpay: /images/wechat-reward-image.jpg
+# alipay: /path/to/alipay-reward-image
+# Wechat Subscriber
+wechat_subscriber:
+  enabled: true
+  qcode: /images/wechat-qcode.jpg
+  description: 欢迎订阅微信公众号!

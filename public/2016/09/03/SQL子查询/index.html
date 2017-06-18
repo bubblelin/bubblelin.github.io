@@ -1,0 +1,798 @@
+<!doctype html>
+
+
+
+  
+
+
+
+<html class="theme-next muse use-motion">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/vendors/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/vendors/font-awesome/css/font-awesome.min.css?v=4.4.0" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.0.1" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="SQL," />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.0.1" />
+
+
+
+
+
+
+<meta name="description" content="什么是子查询子查询也叫嵌套查询，一个查询语句嵌套在另一个查询语句中，内层查询的结果可以作为外层查询条件，或者可以看成临时表。一般的，嵌套在where 或者 from子句中。
+多表连接查询过程：
+
+两张表做笛卡尔积；
+筛选匹配条件的数据记录
+若笛卡尔积记录数比较大，可能造成服务器崩溃
+
+Example Tables：商品表和商品分类表
+123456789101112131415161718192">
+<meta property="og:type" content="article">
+<meta property="og:title" content="SQL子查询基于MySQL">
+<meta property="og:url" content="https://bubblelin.github.io/2016/09/03/SQL子查询/index.html">
+<meta property="og:site_name" content="Bubblelin's blog">
+<meta property="og:description" content="什么是子查询子查询也叫嵌套查询，一个查询语句嵌套在另一个查询语句中，内层查询的结果可以作为外层查询条件，或者可以看成临时表。一般的，嵌套在where 或者 from子句中。
+多表连接查询过程：
+
+两张表做笛卡尔积；
+筛选匹配条件的数据记录
+若笛卡尔积记录数比较大，可能造成服务器崩溃
+
+Example Tables：商品表和商品分类表
+123456789101112131415161718192">
+<meta property="og:updated_time" content="2016-10-04T05:32:19.091Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="SQL子查询基于MySQL">
+<meta name="twitter:description" content="什么是子查询子查询也叫嵌套查询，一个查询语句嵌套在另一个查询语句中，内层查询的结果可以作为外层查询条件，或者可以看成临时表。一般的，嵌套在where 或者 from子句中。
+多表连接查询过程：
+
+两张表做笛卡尔积；
+筛选匹配条件的数据记录
+若笛卡尔积记录数比较大，可能造成服务器崩溃
+
+Example Tables：商品表和商品分类表
+123456789101112131415161718192">
+
+
+
+<script type="text/javascript" id="hexo.configuration">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    scheme: 'Muse',
+    sidebar: {"position":"left","display":"post"},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: undefined,
+      author: '博主'
+    }
+  };
+</script>
+
+
+
+
+  <link rel="canonical" href="https://bubblelin.github.io/2016/09/03/SQL子查询/"/>
+
+  <title> SQL子查询基于MySQL | Bubblelin's blog </title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+
+
+
+  <script type="text/javascript">
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "//hm.baidu.com/hm.js?227ebbb1b711ccb58e3648ac7440c2c3";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container one-collumn sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-meta ">
+  
+
+  <div class="custom-logo-site-title">
+    <a href="/"  class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <span class="site-title">Bubblelin's blog</span>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+  <p class="site-subtitle">编程与生活</p>
+</div>
+
+<div class="site-nav-toggle">
+  <button>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+  </button>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-commonweal">
+          <a href="/404.html" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-heartbeat"></i> <br />
+            
+            公益404
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                SQL子查询基于MySQL
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">发表于</span>
+            <time itemprop="dateCreated" datetime="2016-09-03T21:42:42+08:00" content="2016-09-03">
+              2016-09-03
+            </time>
+          </span>
+
+          
+            <span class="post-category" >
+              &nbsp; | &nbsp;
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+              
+                <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
+                  <a href="/categories/数据库/" itemprop="url" rel="index">
+                    <span itemprop="name">数据库</span>
+                  </a>
+                </span>
+
+                
+                
+
+              
+            </span>
+          
+
+          
+            
+          
+
+			
+			<span>&nbsp; | &nbsp;
+			<span id="busuanzi_value_page_pv" ></span>次阅读
+			</span>
+			
+
+          
+
+          
+          
+
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <script src="/assets/js/DPlayer.min.js"> </script><script src="/assets/js/APlayer.min.js"> </script><h3 id="什么是子查询"><a href="#什么是子查询" class="headerlink" title="什么是子查询"></a>什么是子查询</h3><p>子查询也叫嵌套查询，一个查询语句嵌套在另一个查询语句中，内层查询的结果可以作为外层查询条件，或者可以看成临时表。一般的，嵌套在<code>where</code> 或者 <code>from</code>子句中。</p>
+<p>多表连接查询过程：</p>
+<ul>
+<li>两张表做笛卡尔积；</li>
+<li>筛选匹配条件的数据记录</li>
+<li>若笛卡尔积记录数比较大，可能造成服务器崩溃</li>
+</ul>
+<p>Example Tables：商品表和商品分类表</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div></pre></td><td class="code"><pre><div class="line"></div><div class="line">mysql&gt; select * from product;</div><div class="line">+----+----------------+--------+-----------+----------+-------+--------+-----------+</div><div class="line">| id | productName    | dir_id | salePrice | supplier | brand | cutoff | costPrice |</div><div class="line">+----+----------------+--------+-----------+----------+-------+--------+-----------+</div><div class="line">|  1 | 罗技M90        |      3 |        90 | 罗技     | 罗技  |    0.5 |        35 |</div><div class="line">|  2 | 罗技M100       |      3 |        49 | 罗技     | 罗技  |    0.9 |        33 |</div><div class="line">|  3 | 罗技M115       |      3 |        99 | 罗技     | 罗技  |    0.6 |        38 |</div><div class="line">|  4 | 罗技M125       |      3 |        80 | 罗技     | 罗技  |    0.9 |        39 |</div><div class="line">|  5 | 罗技木星轨迹球  |      3 |       182 | 罗技     | 罗技  |    0.8 |        80 |</div><div class="line">|  6 | 罗技火星轨迹球  |      3 |       349 | 罗技     | 罗技  |   0.87 |       290 |</div><div class="line">|  7 | 罗技G9X        |      3 |       680 | 罗技     | 罗技  |    0.7 |       470 |</div><div class="line">|  8 | 罗技M215       |      2 |        89 | 罗技     | 罗技  |   0.79 |        30 |</div><div class="line">|  9 | 罗技M305       |      2 |       119 | 罗技     | 罗技  |   0.82 |        48 |</div><div class="line">| 10 | 罗技M310       |      2 |       135 | 罗技     | 罗技  |   0.92 |      69.8 |</div><div class="line">| 11 | 罗技M505       |      2 |       148 | 罗技     | 罗技  |   0.92 |        72 |</div><div class="line">| 12 | 罗技M555       |      2 |       275 | 罗技     | 罗技  |   0.88 |       140 |</div><div class="line">| 13 | 罗技M905       |      2 |       458 | 罗技     | 罗技  |   0.88 |       270 |</div><div class="line">| 14 | 罗技MX1100     |      2 |       550 | 罗技     | 罗技  |   0.76 |       300 |</div><div class="line">| 15 | 罗技M950       |      2 |       678 | 罗技     | 罗技  |   0.78 |       320 |</div><div class="line">| 16 | 罗技MX Air     |      2 |      1299 | 罗技     | 罗技  |   0.72 |       400 |</div><div class="line">| 17 | 罗技G1         |      4 |       155 | 罗技     | 罗技  |    0.8 |        49 |</div><div class="line">| 18 | 罗技G3         |      4 |       229 | 罗技     | 罗技  |   0.77 |        96 |</div><div class="line">| 19 | 罗技G500       |      4 |       399 | 罗技     | 罗技  |   0.88 |       130 |</div><div class="line">| 20 | 罗技G700       |      4 |       699 | 罗技     | 罗技  |   0.79 |       278 |</div><div class="line">+----+----------------+--------+-----------+----------+-------+--------+-----------+</div></pre></td></tr></table></figure>
+<figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line">mysql&gt; select * from productdir;</div><div class="line">+----+----------+-----------+</div><div class="line">| id | dirName  | parent_id |</div><div class="line">+----+----------+-----------+</div><div class="line">|  1 | 鼠标     | NULL      |</div><div class="line">|  2 | 无线鼠标 |         1 |</div><div class="line">|  3 | 有线鼠标 |         1 |</div><div class="line">|  4 | 游戏鼠标 |         1 |</div><div class="line">+----+----------+-----------+</div></pre></td></tr></table></figure>
+<h3 id="子查询之单行单列查询"><a href="#子查询之单行单列查询" class="headerlink" title="子查询之单行单列查询"></a>子查询之单行单列查询</h3><p>子查询的结果（临时表），返回的是只有一行，且只有一列的数据，提供作外表查询的条件</p>
+<ul>
+<li><p>需求：查询零售价比‘罗技G90X’更高的商品信息。</p>
+</li>
+<li><p>sql语句</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">select</span></div><div class="line">  *</div><div class="line"><span class="keyword">from</span></div><div class="line">  product</div><div class="line"><span class="keyword">where</span></div><div class="line">  salePrice &gt; (</div><div class="line">    <span class="keyword">select</span></div><div class="line">      salePrice</div><div class="line">    <span class="keyword">from</span></div><div class="line">      product</div><div class="line">    <span class="keyword">where</span></div><div class="line">      productName = <span class="string">'罗技G9X'</span></div><div class="line">  );</div></pre></td></tr></table></figure>
+</li>
+<li><p>查询结果</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">+<span class="comment">----+-------------+--------+-----------+----------+-------+--------+-----------+</span></div><div class="line">| id | productName | dir_id | salePrice | supplier | brand | cutoff | costPrice |</div><div class="line">+<span class="comment">----+-------------+--------+-----------+----------+-------+--------+-----------+</span></div><div class="line">| 16 | 罗技MX Air  |      2 |      1299 | 罗技     | 罗技  |   0.72 |       400 |</div><div class="line">| 20 | 罗技G700    |      4 |       699 | 罗技     | 罗技  |   0.79 |       278 |</div><div class="line">+<span class="comment">----+-------------+--------+-----------+----------+-------+--------+-----------+</span></div></pre></td></tr></table></figure>
+</li>
+</ul>
+<h3 id="子查询之单行多列查询"><a href="#子查询之单行多列查询" class="headerlink" title="子查询之单行多列查询"></a>子查询之单行多列查询</h3><p>子查询的结果（临时表），返回的是只有一行，但是有多列的数据，提供作外表查询的条件</p>
+<ul>
+<li><p>需求：查询分类编号和折扣与‘罗技M100’相同的的商品信息。</p>
+</li>
+<li><p>sql语句</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">select</span></div><div class="line">  p.*</div><div class="line"><span class="keyword">from</span></div><div class="line">  product p</div><div class="line"><span class="keyword">where</span></div><div class="line">  (p.dir_id,p.cutoff)=(</div><div class="line">    <span class="keyword">select</span></div><div class="line">      p.dir_id,p.cutoff</div><div class="line">    <span class="keyword">from</span></div><div class="line">      product p</div><div class="line">    <span class="keyword">where</span></div><div class="line">      p.productName = <span class="string">'罗技M100'</span></div><div class="line">  );</div></pre></td></tr></table></figure>
+</li>
+<li><p>查询结果</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">+<span class="comment">----+-------------+--------+-----------+----------+-------+--------+-----------+</span></div><div class="line">| id | productName | dir_id | salePrice | supplier | brand | cutoff | costPrice |</div><div class="line">+<span class="comment">----+-------------+--------+-----------+----------+-------+--------+-----------+</span></div><div class="line">|  2 | 罗技M100    |      3 |        49 | 罗技     | 罗技  |    0.9 |        33 |</div><div class="line">|  4 | 罗技M125    |      3 |        80 | 罗技     | 罗技  |    0.9 |        39 |</div><div class="line">+<span class="comment">----+-------------+--------+-----------+----------+-------+--------+-----------+</span></div></pre></td></tr></table></figure>
+</li>
+</ul>
+<h3 id="子查询之多行多列查询"><a href="#子查询之多行多列查询" class="headerlink" title="子查询之多行多列查询"></a>子查询之多行多列查询</h3><ul>
+<li><p>需求：查询各商品的分类的分类编号，分类名称，商品数量，平均价格</p>
+</li>
+<li><p>sql语句</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">select</span></div><div class="line">  pd.id,pd.dirName,temp.CountNum,temp.avgPrice</div><div class="line"><span class="keyword">from</span></div><div class="line">  productdir pd</div><div class="line"><span class="keyword">join</span></div><div class="line">(</div><div class="line">  <span class="keyword">select</span></div><div class="line">    p.dir_id tId, <span class="keyword">count</span>(p.id) countNum, <span class="keyword">avg</span>(p.salePrice) avgPrice</div><div class="line">  <span class="keyword">from</span></div><div class="line">    product p</div><div class="line">  <span class="keyword">group</span> <span class="keyword">by</span></div><div class="line">    p.dir_id</div><div class="line">)</div><div class="line">  temp</div><div class="line"><span class="keyword">on</span></div><div class="line">  pd.id = temp.tId;</div></pre></td></tr></table></figure>
+</li>
+<li><p>查询结果</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">+<span class="comment">----+----------+----------+------------+</span></div><div class="line">| id | dirName  | CountNum | avgPrice   |</div><div class="line">+<span class="comment">----+----------+----------+------------+</span></div><div class="line">|  2 | 无线鼠标 |        9 | 416.777778 |</div><div class="line">|  3 | 有线鼠标 |        7 | 218.428571 |</div><div class="line">|  4 | 游戏鼠标 |        4 |      370.5 |</div><div class="line">+<span class="comment">----+----------+----------+------------+</span></div></pre></td></tr></table></figure>
+</li>
+</ul>
+
+      
+    </div>
+
+    <div>
+      
+        
+<div id="wechat_subscriber" style="display: block; padding: 10px 0; margin: 20px auto; width: 100%; text-align: center">
+    <img id="wechat_subscriber_qcode" src="/images/wechat-qcode.jpg" alt="Bubblelin wechat" style="width: 200px; max-width: 100%;"/>
+    <div>欢迎订阅微信公众号!</div>
+</div>
+
+
+      
+    </div>
+
+    <div>
+      
+        
+  <div style="padding: 10px 0; margin: 20px auto; width: 90%; text-align: center;">
+    <div>坚持原创技术分享，您的支持将鼓励我继续创作！</div>
+    <button id="rewardButton" disable="enable" onclick="var qr = document.getElementById('QR'); if (qr.style.display === 'none') {qr.style.display='block';} else {qr.style.display='none'}">
+      <span>赏</span>
+    </button>
+    <div id="QR" style="display: none;">
+      
+        <div id="wechat" style="display: inline-block">
+          <img id="wechat_qr" src="/images/wechat-reward-image.jpg" alt="Bubblelin WeChat Pay"/>
+          <p>微信打赏</p>
+        </div>
+      
+      
+    </div>
+  </div>
+
+
+      
+    </div>
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/SQL/" rel="tag">#SQL</a>
+          
+        </div>
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2016/09/03/SQL分组查询/" rel="next" title="SQL分组查询">
+                <i class="fa fa-chevron-left"></i> SQL分组查询
+              </a>
+            
+          </div>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2016/09/25/SQL连接查询语法/" rel="prev" title="SQL连接查询语法">
+                SQL连接查询语法 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+        <!-- JiaThis Button BEGIN -->
+<!-- <div class="jiathis_style">
+  <a class="jiathis_button_tsina"></a>
+  <a class="jiathis_button_tqq"></a>
+  <a class="jiathis_button_weixin"></a>
+  <a class="jiathis_button_cqq"></a>
+  <a class="jiathis_button_douban"></a>
+  <a class="jiathis_button_renren"></a>
+  <a class="jiathis_button_qzone"></a>
+  <a class="jiathis_button_kaixin001"></a>
+  <a class="jiathis_button_copy"></a>
+  <a href="http://www.jiathis.com/share" class="jiathis jiathis_txt jiathis_separator jtico jtico_jiathis" target="_blank"></a>
+  <a class="jiathis_counter_style"></a>
+</div>
+<script type="text/javascript" >
+  var jiathis_config={
+    hideMore:false
+  }
+</script>
+<script type="text/javascript" src="http://v3.jiathis.com/code/jia.js" charset="utf-8"></script> -->
+<!-- JiaThis Button END -->
+<!-- JiaThis Button BEGIN -->
+<div class="jiathis_style"><span class="jiathis_txt">分享到：</span>
+<a class="jiathis_button_tsina"></a>
+<a class="jiathis_button_weixin"></a>
+<a class="jiathis_button_cqq"></a>
+<a href="http://www.jiathis.com/share" class="jiathis jiathis_txt jiathis_separator jtico jtico_jiathis" target="_blank"></a>
+<a class="jiathis_counter_style"></a>
+</div>
+<script type="text/javascript" >
+var jiathis_config={
+	siteNum:5,
+	sm:"weixin,qzone,tsina,fb,twitter",
+	summary:"",
+	pic:"https://bubblelin.github.io/images/avatar.png",
+	ralateuid:{
+		"tsina":"雨亦奇lin"
+	},
+	shortUrl:true,
+	hideMore:false
+}
+</script>
+<script type="text/javascript" src="http://v3.jiathis.com/code_mini/jia.js" charset="utf-8"></script>
+<!-- JiaThis Button END -->
+
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel ">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/images/avatar.png"
+               alt="Bubblelin" />
+          <p class="site-author-name" itemprop="name">Bubblelin</p>
+          <p class="site-description motion-element" itemprop="description">A  little  effort  every  day</p>
+        </div>
+        <nav class="site-state motion-element">
+          <div class="site-state-item site-state-posts">
+            <a href="/archives">
+              <span class="site-state-item-count">17</span>
+              <span class="site-state-item-name">日志</span>
+            </a>
+          </div>
+
+          
+            <div class="site-state-item site-state-categories">
+              <a href="/categories">
+                <span class="site-state-item-count">4</span>
+                <span class="site-state-item-name">分类</span>
+              </a>
+            </div>
+          
+
+          
+            <div class="site-state-item site-state-tags">
+              <a href="/tags">
+                <span class="site-state-item-count">6</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+            
+              <span class="links-of-author-item">
+                <a href="https://github.com/bubblelin" target="_blank" title="GitHub">
+                  
+                    <i class="fa fa-fw fa-github"></i>
+                  
+                  GitHub
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://weibo.com/bubblelin" target="_blank" title="Weibo">
+                  
+                    <i class="fa fa-fw fa-weibo"></i>
+                  
+                  Weibo
+                </a>
+              </span>
+            
+          
+        </div>
+
+        
+        
+          <div class="cc-license motion-element" itemprop="license">
+            <a href="https://creativecommons.org/licenses/by-nc/4.0/" class="cc-opacity" target="_blank">
+              <img src="/images/cc-by-nc.svg" alt="Creative Commons" />
+            </a>
+          </div>
+        
+
+        
+        
+
+      </section>
+
+      
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+            
+              
+            
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#什么是子查询"><span class="nav-number">1.</span> <span class="nav-text">什么是子查询</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#子查询之单行单列查询"><span class="nav-number">2.</span> <span class="nav-text">子查询之单行单列查询</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#子查询之单行多列查询"><span class="nav-number">3.</span> <span class="nav-text">子查询之单行多列查询</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#子查询之多行多列查询"><span class="nav-number">4.</span> <span class="nav-text">子查询之多行多列查询</span></a></li></ol></div>
+            
+          </div>
+        </section>
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy;  2015 - 
+  <span itemprop="copyrightYear">2017</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Bubblelin</span>
+</div>
+
+<script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+本站访问总量 <span id="busuanzi_value_site_pv"></span> &nbsp|&nbsp
+您是第<span id="busuanzi_value_site_uv"></span>个小伙伴！
+
+        
+
+        
+      </div>
+    </footer>
+
+    <div class="back-to-top">
+      <i class="fa fa-arrow-up"></i>
+    </div>
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+  
+  <script type="text/javascript" src="/vendors/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/vendors/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/vendors/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/vendors/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/vendors/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/vendors/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.0.1"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.0.1"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.0.1"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.0.1"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.0.1"></script>
+
+
+
+  
+
+
+
+  
+
+
+
+
+  
+  
+
+  
+
+  
+
+  
+<script type="text/javascript" async src="//push.zhanzhang.baidu.com/push.js">
+</script>
+
+
+  
+    <script type="text/javascript"
+    color="0,0,255" opacity='0.7' zIndex="-2" count="99" src="//cdn.bootcss.com/canvas-nest.js/1.0.0/canvas-nest.min.js"></script>
+  
+
+  <a href="https://github.com/bubblelin">
+      <img style="position: absolute; top: 0; left: 0; border: 0;"
+      src="/images/68747470733a2f2f73332e616d617a6f6e6177732e636f6d2f6769746875622f726962626f6e732f666f726b6d655f6c6566745f677265656e5f3030373230302e706e67.png"
+      alt="Fork me on GitHub"
+      data-canonical-src="/images/forkme_left_green_007200.png">
+  </a>
+
+</body>
+</html>

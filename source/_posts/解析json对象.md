@@ -5,7 +5,34 @@ categories: 编程
 tags: [Java]
 ---
 
-### 创建Person实体类
+### JSON语法
+> JSON(JavaScript Object Notation, JS 对象标记) 是一种轻量级的数据交换格式.JSON 简单的语法格式和清晰的层次结构明显要比 XML 容易阅读，并且在数据交换方面，由于 JSON 所使用的字符要比 XML 少得多，可以大大得节约传输数据所占用得带宽。
+
+比较常用的两种类型：
+1. 对象
+2. 数组
+
+
+json的格式：
+- 对象表示为键值对
+``` json
+{'key':'value'}
+```
+- 数据由逗号分隔
+``` json
+{'key1':'value1','key2':'value2'}
+```
+- 花括号保存对象
+``` json
+{'key1':'value1','key2':'value2',{'name':'number'}}
+```
+- 方括号保存数组
+``` json
+{'key1':'value1','key2':'value2',['Jhon:'Mach']}
+```
+
+### 组装json的方法
+##### 创建Person实体类
 
 ```java
 public class Person {
@@ -16,7 +43,7 @@ public class Person {
 }
 ```
 
-### 组装json的方法
+##### 组装json
 
 ```java
 public String viewMagazine(){

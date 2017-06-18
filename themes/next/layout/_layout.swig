@@ -5,6 +5,7 @@
   {% set html_class = html_class + ' use-motion' %}
 {% endif %}
 
+
 <html class="{{ html_class | lower }}">
 <head>
   {% include '_partials/head.swig' %}
@@ -71,6 +72,18 @@
   {% include '_scripts/third-party/mathjax.swig' %}
   {% include '_scripts/third-party/lean-analytics.swig' %}
   {% include '_scripts/baidu-push.swig' %}
+
+  {% if theme.canvas_nest %}
+    <script type="text/javascript"
+    color="0,0,255" opacity='0.7' zIndex="-2" count="99" src="//cdn.bootcss.com/canvas-nest.js/1.0.0/canvas-nest.min.js"></script>
+  {% endif %}
+
+  <a href="https://github.com/bubblelin">
+      <img style="position: absolute; top: 0; left: 0; border: 0;"
+      src="/images/68747470733a2f2f73332e616d617a6f6e6177732e636f6d2f6769746875622f726962626f6e732f666f726b6d655f6c6566745f677265656e5f3030373230302e706e67.png"
+      alt="Fork me on GitHub"
+      data-canonical-src="/images/forkme_left_green_007200.png">
+  </a>
 
 </body>
 </html>

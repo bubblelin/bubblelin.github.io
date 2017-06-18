@@ -1,0 +1,754 @@
+<!doctype html>
+
+
+
+  
+
+
+
+<html class="theme-next muse use-motion">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/vendors/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/vendors/font-awesome/css/font-awesome.min.css?v=4.4.0" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.0.1" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="Java," />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.0.1" />
+
+
+
+
+
+
+<meta name="description" content="条件查询–准备条件查询的SQL语句：比如下面的语句，其中条件一表示columnName1关键字查询，条件二表示columnName2取值大于xxx
+1select t.* from tableName t where t.columnName1 like &apos;%M%&apos; and columnName2 &amp;gt; xxx and ...
+实现通用的sql语句的查询实现通用的sql语句的查询需要解决两">
+<meta property="og:type" content="article">
+<meta property="og:title" content="条件查询和分页原理（一）">
+<meta property="og:url" content="https://bubblelin.github.io/2016/08/22/条件查询和分页原理到底是怎么样的/index.html">
+<meta property="og:site_name" content="Bubblelin's blog">
+<meta property="og:description" content="条件查询–准备条件查询的SQL语句：比如下面的语句，其中条件一表示columnName1关键字查询，条件二表示columnName2取值大于xxx
+1select t.* from tableName t where t.columnName1 like &apos;%M%&apos; and columnName2 &amp;gt; xxx and ...
+实现通用的sql语句的查询实现通用的sql语句的查询需要解决两">
+<meta property="og:updated_time" content="2016-09-13T01:50:54.185Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="条件查询和分页原理（一）">
+<meta name="twitter:description" content="条件查询–准备条件查询的SQL语句：比如下面的语句，其中条件一表示columnName1关键字查询，条件二表示columnName2取值大于xxx
+1select t.* from tableName t where t.columnName1 like &apos;%M%&apos; and columnName2 &amp;gt; xxx and ...
+实现通用的sql语句的查询实现通用的sql语句的查询需要解决两">
+
+
+
+<script type="text/javascript" id="hexo.configuration">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    scheme: 'Muse',
+    sidebar: {"position":"left","display":"post"},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: undefined,
+      author: '博主'
+    }
+  };
+</script>
+
+
+
+
+  <link rel="canonical" href="https://bubblelin.github.io/2016/08/22/条件查询和分页原理到底是怎么样的/"/>
+
+  <title> 条件查询和分页原理（一） | Bubblelin's blog </title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+
+
+
+  <script type="text/javascript">
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "//hm.baidu.com/hm.js?227ebbb1b711ccb58e3648ac7440c2c3";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container one-collumn sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-meta ">
+  
+
+  <div class="custom-logo-site-title">
+    <a href="/"  class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <span class="site-title">Bubblelin's blog</span>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+  <p class="site-subtitle">编程与生活</p>
+</div>
+
+<div class="site-nav-toggle">
+  <button>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+  </button>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-commonweal">
+          <a href="/404.html" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-heartbeat"></i> <br />
+            
+            公益404
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                条件查询和分页原理（一）
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">发表于</span>
+            <time itemprop="dateCreated" datetime="2016-08-22T00:33:54+08:00" content="2016-08-22">
+              2016-08-22
+            </time>
+          </span>
+
+          
+            <span class="post-category" >
+              &nbsp; | &nbsp;
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+              
+                <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
+                  <a href="/categories/编程/" itemprop="url" rel="index">
+                    <span itemprop="name">编程</span>
+                  </a>
+                </span>
+
+                
+                
+
+              
+            </span>
+          
+
+          
+            
+          
+
+			
+			<span>&nbsp; | &nbsp;
+			<span id="busuanzi_value_page_pv" ></span>次阅读
+			</span>
+			
+
+          
+
+          
+          
+
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <script src="/assets/js/DPlayer.min.js"> </script><script src="/assets/js/APlayer.min.js"> </script><h3 id="条件查询–准备"><a href="#条件查询–准备" class="headerlink" title="条件查询–准备"></a>条件查询–准备</h3><h4 id="条件查询的SQL语句："><a href="#条件查询的SQL语句：" class="headerlink" title="条件查询的SQL语句："></a>条件查询的SQL语句：</h4><p>比如下面的语句，其中条件一表示columnName1关键字查询，条件二表示columnName2取值大于xxx</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">select</span> t.* <span class="keyword">from</span> tableName t <span class="keyword">where</span> t.columnName1 <span class="keyword">like</span> <span class="string">'%M%'</span> <span class="keyword">and</span> columnName2 &gt; xxx <span class="keyword">and</span> ...</div></pre></td></tr></table></figure>
+<h4 id="实现通用的sql语句的查询"><a href="#实现通用的sql语句的查询" class="headerlink" title="实现通用的sql语句的查询"></a>实现通用的sql语句的查询</h4><p>实现通用的sql语句的查询需要解决两部分的封装：</p>
+<ul>
+<li>一部分是预编译语句的封装，比如：</li>
+</ul>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">String sql = <span class="string">"select t.* from tableName t where t.columnName1 like ? and columnName2 &gt; ？"</span>;</div></pre></td></tr></table></figure>
+<ul>
+<li>一部分是参数的封装<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">Object[] params = &#123;t.columnName1,t.columnName2&#125;;</div></pre></td></tr></table></figure>
+</li>
+</ul>
+<h3 id="定义接口的规范"><a href="#定义接口的规范" class="headerlink" title="定义接口的规范"></a>定义接口的规范</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div></pre></td><td class="code"><pre><div class="line"><span class="comment">/**</span></div><div class="line"> * 查询</div><div class="line"> * <span class="doctag">@author</span> bubblelin</div><div class="line"> *</div><div class="line"> */</div><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">interface</span> <span class="title">IQuery</span> </span>&#123;</div><div class="line"></div><div class="line">	<span class="comment">/**</span></div><div class="line">	 * 查询条件</div><div class="line">	 * <span class="doctag">@return</span></div><div class="line">	 */</div><div class="line">	<span class="function">String <span class="title">getQuerySql</span><span class="params">()</span></span>;</div><div class="line"></div><div class="line">	<span class="comment">/**</span></div><div class="line">	 * 查询条件的参数</div><div class="line">	 * <span class="doctag">@return</span></div><div class="line">	 */</div><div class="line">	<span class="function">List&lt;Object&gt; <span class="title">getParameters</span><span class="params">()</span></span>;</div><div class="line"></div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<h3 id="实现接口-核心部分"><a href="#实现接口-核心部分" class="headerlink" title="实现接口(核心部分)"></a>实现接口(核心部分)</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div></pre></td><td class="code"><pre><div class="line"><span class="comment">/**</span></div><div class="line"> * 高级查询的实体</div><div class="line"> *</div><div class="line"> * <span class="doctag">@author</span> bubblelin</div><div class="line"> * <span class="doctag">@param</span> &lt;T&gt;</div><div class="line"> *</div><div class="line"> */</div><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">QueryObject</span> <span class="keyword">implements</span> <span class="title">IQuery</span> </span>&#123;</div><div class="line"></div><div class="line">	<span class="keyword">private</span> List&lt;Object&gt; parameters = <span class="keyword">new</span> ArrayList&lt;&gt;();</div><div class="line">	<span class="keyword">private</span> List&lt;Object&gt; conditions = <span class="keyword">new</span> ArrayList&lt;&gt;();</div><div class="line">	<span class="keyword">private</span> Map&lt;String, String&gt; orderByMap = <span class="keyword">new</span> LinkedHashMap&lt;&gt;();</div><div class="line"></div><div class="line">	<span class="function"><span class="keyword">public</span> String <span class="title">getQuerySql</span><span class="params">()</span> </span>&#123;</div><div class="line">		<span class="comment">//清空集合</span></div><div class="line">		<span class="keyword">this</span>.parameters.clear();</div><div class="line">		<span class="keyword">this</span>.conditions.clear();</div><div class="line">		<span class="comment">// "select t.* from tableName t where t.columnName1 like ? and columnName2 &gt; ？"</span></div><div class="line">		StringBuilder sb = <span class="keyword">new</span> StringBuilder(<span class="number">200</span>);</div><div class="line">    <span class="comment">//调用自定义查询条件的方法</span></div><div class="line">		customizedQuery();</div><div class="line">    <span class="comment">//拼接条件语句</span></div><div class="line">		<span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; conditions.size(); i++) &#123;</div><div class="line">			<span class="keyword">if</span> (i == <span class="number">0</span>) &#123;</div><div class="line">				sb.append(<span class="string">" where "</span>);</div><div class="line">			&#125; <span class="keyword">else</span> &#123;</div><div class="line">				sb.append(<span class="string">" and "</span>);</div><div class="line">			&#125;</div><div class="line">			sb.append(<span class="string">"("</span> + conditions.get(i) + <span class="string">")"</span>);</div><div class="line">		&#125;</div><div class="line">		<span class="keyword">return</span> sb.toString();</div><div class="line">	&#125;</div><div class="line"></div><div class="line">	<span class="function"><span class="keyword">public</span> List&lt;Object&gt; <span class="title">getParameters</span><span class="params">()</span> </span>&#123;</div><div class="line">		<span class="keyword">return</span> parameters;</div><div class="line">	&#125;</div><div class="line">  <span class="comment">//用于子类继承，并实现自定义的查询条件</span></div><div class="line">	<span class="function"><span class="keyword">protected</span> <span class="keyword">void</span> <span class="title">customizedQuery</span><span class="params">()</span> </span>&#123;</div><div class="line">	&#125;</div><div class="line">  <span class="comment">//用于子类的继承，查询条件封装到conditions集合，查询参数封装到parameters集合</span></div><div class="line">	<span class="function"><span class="keyword">protected</span> <span class="keyword">void</span> <span class="title">setQueryObject</span><span class="params">(String condition, Object... parameter)</span> </span>&#123;</div><div class="line">		conditions.add(condition);</div><div class="line">		parameters.addAll(Arrays.asList(parameter));</div><div class="line">	&#125;</div><div class="line"></div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<h3 id="子类条件查询的实体"><a href="#子类条件查询的实体" class="headerlink" title="子类条件查询的实体"></a>子类条件查询的实体</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div></pre></td><td class="code"><pre><div class="line"><span class="comment">/**</span></div><div class="line"> * 高级查询的实体</div><div class="line"> * <span class="doctag">@author</span> bubblelin</div><div class="line"> *</div><div class="line"> */</div><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">ProductQueryObject</span> <span class="keyword">extends</span> <span class="title">QueryObject</span></span>&#123;</div><div class="line">  <span class="comment">//实现getter/setter方法</span></div><div class="line">	<span class="keyword">private</span> String productName;</div><div class="line">	<span class="keyword">private</span> BigDecimal minSalePrice;</div><div class="line">	<span class="keyword">private</span> BigDecimal maxSalePrice;</div><div class="line">	<span class="keyword">private</span> Long dir_id;</div><div class="line">	<span class="keyword">private</span> String keyWord;</div><div class="line"></div><div class="line">	<span class="function"><span class="keyword">protected</span> <span class="keyword">void</span> <span class="title">customizedQuery</span><span class="params">()</span></span>&#123;</div><div class="line">		<span class="keyword">if</span>(StringUtils.hasLength(productName))&#123;</div><div class="line">			<span class="keyword">super</span>.setQueryObject(<span class="string">" productName like ? "</span>, <span class="string">"%"</span>+productName+<span class="string">"%"</span>);</div><div class="line">		&#125;</div><div class="line">		<span class="keyword">if</span>(minSalePrice != <span class="keyword">null</span>)&#123;</div><div class="line">			<span class="keyword">super</span>.setQueryObject(<span class="string">" salePrice&gt;? "</span>, minSalePrice);</div><div class="line">		&#125;</div><div class="line">		<span class="keyword">if</span>(maxSalePrice != <span class="keyword">null</span>)&#123;</div><div class="line">			<span class="keyword">super</span>.setQueryObject(<span class="string">" salePrice&lt;? "</span>, maxSalePrice);</div><div class="line">		&#125;</div><div class="line">		<span class="keyword">if</span>(dir_id != <span class="keyword">null</span> &amp;&amp; dir_id != -<span class="number">1</span>)&#123;</div><div class="line">			<span class="keyword">super</span>.setQueryObject(<span class="string">" dir_Id= ? "</span>, dir_id);</div><div class="line">		&#125;</div><div class="line">		<span class="keyword">if</span>(StringUtils.hasLength(keyWord))&#123;</div><div class="line">      <span class="comment">//一个查询条件对应两个参数，父类用`Object... parameter`接收</span></div><div class="line">			<span class="keyword">super</span>.setQueryObject(<span class="string">" productName like ? or brand like ? "</span>, <span class="string">"%"</span>+keyWord+<span class="string">"%"</span>,<span class="string">"%"</span>+keyWord+<span class="string">"%"</span>);</div><div class="line">		&#125;</div><div class="line">	&#125;</div></pre></td></tr></table></figure>
+<h3 id="查询方法"><a href="#查询方法" class="headerlink" title="查询方法"></a>查询方法</h3><p>备注：<code>JdbcTemplate.executeQuery（）</code>未数据库查询方法</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div></pre></td><td class="code"><pre><div class="line"><span class="comment">/**</span></div><div class="line"> * 条件查询</div><div class="line"> */</div><div class="line"><span class="function"><span class="keyword">public</span> List&lt;Product&gt; <span class="title">queryProduct</span><span class="params">(IQuery qo)</span> </span>&#123;</div><div class="line">  <span class="comment">//预编译语句的封装</span></div><div class="line">  String sql = <span class="string">"select * from product "</span> + qo.getQuerySql();</div><div class="line">  <span class="comment">//参数的封装</span></div><div class="line">  Object[] parameters = qo.getParameters().toArray();</div><div class="line">  <span class="comment">//查询的方法</span></div><div class="line">  <span class="keyword">return</span> JdbcTemplate.executeQuery(sql, <span class="keyword">new</span> productResultSetHandlerList(),</div><div class="line">      parameters);</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+
+      
+    </div>
+
+    <div>
+      
+        
+<div id="wechat_subscriber" style="display: block; padding: 10px 0; margin: 20px auto; width: 100%; text-align: center">
+    <img id="wechat_subscriber_qcode" src="/images/wechat-qcode.jpg" alt="Bubblelin wechat" style="width: 200px; max-width: 100%;"/>
+    <div>欢迎订阅微信公众号!</div>
+</div>
+
+
+      
+    </div>
+
+    <div>
+      
+        
+  <div style="padding: 10px 0; margin: 20px auto; width: 90%; text-align: center;">
+    <div>坚持原创技术分享，您的支持将鼓励我继续创作！</div>
+    <button id="rewardButton" disable="enable" onclick="var qr = document.getElementById('QR'); if (qr.style.display === 'none') {qr.style.display='block';} else {qr.style.display='none'}">
+      <span>赏</span>
+    </button>
+    <div id="QR" style="display: none;">
+      
+        <div id="wechat" style="display: inline-block">
+          <img id="wechat_qr" src="/images/wechat-reward-image.jpg" alt="Bubblelin WeChat Pay"/>
+          <p>微信打赏</p>
+        </div>
+      
+      
+    </div>
+  </div>
+
+
+      
+    </div>
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/Java/" rel="tag">#Java</a>
+          
+        </div>
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2016/08/20/hello-world/" rel="next" title="Git和Hexo命令行">
+                <i class="fa fa-chevron-left"></i> Git和Hexo命令行
+              </a>
+            
+          </div>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2016/08/23/条件查询和分页原理到底是怎么样的（二）/" rel="prev" title="条件查询和分页原理（二）">
+                条件查询和分页原理（二） <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+        <!-- JiaThis Button BEGIN -->
+<!-- <div class="jiathis_style">
+  <a class="jiathis_button_tsina"></a>
+  <a class="jiathis_button_tqq"></a>
+  <a class="jiathis_button_weixin"></a>
+  <a class="jiathis_button_cqq"></a>
+  <a class="jiathis_button_douban"></a>
+  <a class="jiathis_button_renren"></a>
+  <a class="jiathis_button_qzone"></a>
+  <a class="jiathis_button_kaixin001"></a>
+  <a class="jiathis_button_copy"></a>
+  <a href="http://www.jiathis.com/share" class="jiathis jiathis_txt jiathis_separator jtico jtico_jiathis" target="_blank"></a>
+  <a class="jiathis_counter_style"></a>
+</div>
+<script type="text/javascript" >
+  var jiathis_config={
+    hideMore:false
+  }
+</script>
+<script type="text/javascript" src="http://v3.jiathis.com/code/jia.js" charset="utf-8"></script> -->
+<!-- JiaThis Button END -->
+<!-- JiaThis Button BEGIN -->
+<div class="jiathis_style"><span class="jiathis_txt">分享到：</span>
+<a class="jiathis_button_tsina"></a>
+<a class="jiathis_button_weixin"></a>
+<a class="jiathis_button_cqq"></a>
+<a href="http://www.jiathis.com/share" class="jiathis jiathis_txt jiathis_separator jtico jtico_jiathis" target="_blank"></a>
+<a class="jiathis_counter_style"></a>
+</div>
+<script type="text/javascript" >
+var jiathis_config={
+	siteNum:5,
+	sm:"weixin,qzone,tsina,fb,twitter",
+	summary:"",
+	pic:"https://bubblelin.github.io/images/avatar.png",
+	ralateuid:{
+		"tsina":"雨亦奇lin"
+	},
+	shortUrl:true,
+	hideMore:false
+}
+</script>
+<script type="text/javascript" src="http://v3.jiathis.com/code_mini/jia.js" charset="utf-8"></script>
+<!-- JiaThis Button END -->
+
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel ">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/images/avatar.png"
+               alt="Bubblelin" />
+          <p class="site-author-name" itemprop="name">Bubblelin</p>
+          <p class="site-description motion-element" itemprop="description">A  little  effort  every  day</p>
+        </div>
+        <nav class="site-state motion-element">
+          <div class="site-state-item site-state-posts">
+            <a href="/archives">
+              <span class="site-state-item-count">17</span>
+              <span class="site-state-item-name">日志</span>
+            </a>
+          </div>
+
+          
+            <div class="site-state-item site-state-categories">
+              <a href="/categories">
+                <span class="site-state-item-count">4</span>
+                <span class="site-state-item-name">分类</span>
+              </a>
+            </div>
+          
+
+          
+            <div class="site-state-item site-state-tags">
+              <a href="/tags">
+                <span class="site-state-item-count">6</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+            
+              <span class="links-of-author-item">
+                <a href="https://github.com/bubblelin" target="_blank" title="GitHub">
+                  
+                    <i class="fa fa-fw fa-github"></i>
+                  
+                  GitHub
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://weibo.com/bubblelin" target="_blank" title="Weibo">
+                  
+                    <i class="fa fa-fw fa-weibo"></i>
+                  
+                  Weibo
+                </a>
+              </span>
+            
+          
+        </div>
+
+        
+        
+          <div class="cc-license motion-element" itemprop="license">
+            <a href="https://creativecommons.org/licenses/by-nc/4.0/" class="cc-opacity" target="_blank">
+              <img src="/images/cc-by-nc.svg" alt="Creative Commons" />
+            </a>
+          </div>
+        
+
+        
+        
+
+      </section>
+
+      
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+            
+              
+            
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#条件查询–准备"><span class="nav-number">1.</span> <span class="nav-text">条件查询–准备</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#条件查询的SQL语句："><span class="nav-number">1.1.</span> <span class="nav-text">条件查询的SQL语句：</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#实现通用的sql语句的查询"><span class="nav-number">1.2.</span> <span class="nav-text">实现通用的sql语句的查询</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#定义接口的规范"><span class="nav-number">2.</span> <span class="nav-text">定义接口的规范</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#实现接口-核心部分"><span class="nav-number">3.</span> <span class="nav-text">实现接口(核心部分)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#子类条件查询的实体"><span class="nav-number">4.</span> <span class="nav-text">子类条件查询的实体</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#查询方法"><span class="nav-number">5.</span> <span class="nav-text">查询方法</span></a></li></ol></div>
+            
+          </div>
+        </section>
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy;  2015 - 
+  <span itemprop="copyrightYear">2017</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Bubblelin</span>
+</div>
+
+<script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+本站访问总量 <span id="busuanzi_value_site_pv"></span> &nbsp|&nbsp
+您是第<span id="busuanzi_value_site_uv"></span>个小伙伴！
+
+        
+
+        
+      </div>
+    </footer>
+
+    <div class="back-to-top">
+      <i class="fa fa-arrow-up"></i>
+    </div>
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+  
+  <script type="text/javascript" src="/vendors/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/vendors/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/vendors/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/vendors/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/vendors/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/vendors/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.0.1"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.0.1"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.0.1"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.0.1"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.0.1"></script>
+
+
+
+  
+
+
+
+  
+
+
+
+
+  
+  
+
+  
+
+  
+
+  
+<script type="text/javascript" async src="//push.zhanzhang.baidu.com/push.js">
+</script>
+
+
+  
+    <script type="text/javascript"
+    color="0,0,255" opacity='0.7' zIndex="-2" count="99" src="//cdn.bootcss.com/canvas-nest.js/1.0.0/canvas-nest.min.js"></script>
+  
+
+  <a href="https://github.com/bubblelin">
+      <img style="position: absolute; top: 0; left: 0; border: 0;"
+      src="/images/68747470733a2f2f73332e616d617a6f6e6177732e636f6d2f6769746875622f726962626f6e732f666f726b6d655f6c6566745f677265656e5f3030373230302e706e67.png"
+      alt="Fork me on GitHub"
+      data-canonical-src="/images/forkme_left_green_007200.png">
+  </a>
+
+</body>
+</html>
