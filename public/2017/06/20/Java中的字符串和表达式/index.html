@@ -1,0 +1,875 @@
+<!doctype html>
+
+
+
+  
+
+
+
+<html class="theme-next muse use-motion">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/vendors/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/vendors/font-awesome/css/font-awesome.min.css?v=4.4.0" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.0.1" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="Java," />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.0.1" />
+
+
+
+
+
+
+<meta name="description" content="基础正则表达式匹配&amp;emsp;&amp;emsp;一般来说，正则表达式就是以某种方式来描述字符串。例如，“要找一个数字，他可能有一个负号在最前面”，则用-?表示。&amp;emsp;&amp;emsp;在正则表达式中，\d表示一位数字。但在Java中，需要用\\表示后面的字符有特殊的意义，所以一位数字应该用\\d表示。&amp;emsp;&amp;emsp;要表示“一个或多个之前的表达式”，应该使用+。例如，“表示一个负号，后面跟着">
+<meta property="og:type" content="article">
+<meta property="og:title" content="字符串和正则表达式">
+<meta property="og:url" content="https://bubblelin.github.io/2017/06/20/Java中的字符串和表达式/index.html">
+<meta property="og:site_name" content="Bubblelin's blog">
+<meta property="og:description" content="基础正则表达式匹配&amp;emsp;&amp;emsp;一般来说，正则表达式就是以某种方式来描述字符串。例如，“要找一个数字，他可能有一个负号在最前面”，则用-?表示。&amp;emsp;&amp;emsp;在正则表达式中，\d表示一位数字。但在Java中，需要用\\表示后面的字符有特殊的意义，所以一位数字应该用\\d表示。&amp;emsp;&amp;emsp;要表示“一个或多个之前的表达式”，应该使用+。例如，“表示一个负号，后面跟着">
+<meta property="og:updated_time" content="2017-06-24T01:49:11.406Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="字符串和正则表达式">
+<meta name="twitter:description" content="基础正则表达式匹配&amp;emsp;&amp;emsp;一般来说，正则表达式就是以某种方式来描述字符串。例如，“要找一个数字，他可能有一个负号在最前面”，则用-?表示。&amp;emsp;&amp;emsp;在正则表达式中，\d表示一位数字。但在Java中，需要用\\表示后面的字符有特殊的意义，所以一位数字应该用\\d表示。&amp;emsp;&amp;emsp;要表示“一个或多个之前的表达式”，应该使用+。例如，“表示一个负号，后面跟着">
+
+
+
+<script type="text/javascript" id="hexo.configuration">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    scheme: 'Muse',
+    sidebar: {"position":"left","display":"post"},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: undefined,
+      author: '博主'
+    }
+  };
+</script>
+
+
+
+
+  <link rel="canonical" href="https://bubblelin.github.io/2017/06/20/Java中的字符串和表达式/"/>
+
+  <title> 字符串和正则表达式 | Bubblelin's blog </title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+
+
+
+  <script type="text/javascript">
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "//hm.baidu.com/hm.js?227ebbb1b711ccb58e3648ac7440c2c3";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container one-collumn sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-meta ">
+  
+
+  <div class="custom-logo-site-title">
+    <a href="/"  class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <span class="site-title">Bubblelin's blog</span>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+  <p class="site-subtitle">编程与生活</p>
+</div>
+
+<div class="site-nav-toggle">
+  <button>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+  </button>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-commonweal">
+          <a href="/404.html" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-heartbeat"></i> <br />
+            
+            公益404
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                字符串和正则表达式
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">发表于</span>
+            <time itemprop="dateCreated" datetime="2017-06-20T10:58:27+08:00" content="2017-06-20">
+              2017-06-20
+            </time>
+          </span>
+
+          
+            <span class="post-category" >
+              &nbsp; | &nbsp;
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+              
+                <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
+                  <a href="/categories/编程/" itemprop="url" rel="index">
+                    <span itemprop="name">编程</span>
+                  </a>
+                </span>
+
+                
+                
+
+              
+            </span>
+          
+
+          
+            
+          
+
+			
+			<span>&nbsp; | &nbsp;
+			<span id="busuanzi_value_page_pv" ></span>次阅读
+			</span>
+			
+
+          
+
+          
+          
+
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <script src="/assets/js/APlayer.min.js"> </script><script src="/assets/js/DPlayer.min.js"> </script><h3 id="基础"><a href="#基础" class="headerlink" title="基础"></a>基础</h3><h4 id="正则表达式匹配"><a href="#正则表达式匹配" class="headerlink" title="正则表达式匹配"></a>正则表达式匹配</h4><p>&emsp;&emsp;一般来说，正则表达式就是以某种方式来描述字符串。例如，“要找一个数字，他<strong>可能</strong>有一个负号在最前面”，则用<code>-?</code>表示。<br>&emsp;&emsp;在正则表达式中，<code>\d</code>表示一位数字。但在Java中，需要用<code>\\</code>表示后面的字符有特殊的意义，所以一位数字应该用<code>\\d</code>表示。<br>&emsp;&emsp;要表示“一个或多个之前的表达式”，应该使用<code>+</code>。例如，“表示一个负号，后面跟着一位或多位数字”，表达式为：<br>&emsp;&emsp;<code>-?\\d+</code></p>
+<p>&emsp;&emsp;检查一个String是否匹配如上所诉的正则表达式<br><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">IntegerMatch</span></span>&#123;</div><div class="line"></div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span></span>&#123;</div><div class="line">        System.out.println(<span class="string">"-1234"</span>.matches(<span class="string">"-?\\d+"</span>));<span class="comment">//true</span></div><div class="line">        System.out.println(<span class="string">"1234"</span>.matches(<span class="string">"-?\\d+"</span>));<span class="comment">//true</span></div><div class="line">        System.out.println(<span class="string">"+1234"</span>.matches(<span class="string">"-?\\d+"</span>));<span class="comment">//false</span></div><div class="line">        System.out.println(<span class="string">"+1234"</span>.matches(<span class="string">"(-|\\+)?\\d+"</span>));<span class="comment">//true</span></div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p>前面两个字符串满足对应的正则表达式，匹配成功。第三个字符串开头<code>+</code>，它也是一个合法的字符，但对应的正则表达式不匹配。正则表达式应该描述为“可能以一个加号或减号开头”。在正则表达中，括号<code>()</code>具有分组的效果，而竖线<code>|</code>则表示“或”操作，表达式为：<br>&emsp;&emsp;<code>(-|\\+)?\\d+</code><br>这个正则表达式表示“字符串的起始字符<strong>可能</strong>是一个<code>-</code>或<code>+</code>，或者二者皆没有（因为后面跟着<code>?</code>修饰符），另外字符<code>+</code>在正则表达式中有特殊意义，所以需要用<code>\\</code>转义”。</p>
+<h4 id="Java的split和replace方法"><a href="#Java的split和replace方法" class="headerlink" title="Java的split和replace方法"></a>Java的split和replace方法</h4><ul>
+<li><code>split()</code>方法，旨在将字符串从正则表达式匹配的地方切开<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">public</span> class <span class="title">Splitting</span><span class="params">()</span></span>&#123;</div><div class="line"></div><div class="line">    <span class="keyword">public</span> <span class="keyword">static</span> String knights = <span class="string">"Then, hello world !"</span>;</div><div class="line"></div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">Splitting</span><span class="params">(String regex)</span></span>&#123;</div><div class="line">        System.out.println(Arrays.toString(knights.split(regex)));</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span></span>&#123;</div><div class="line">        Splitting(<span class="string">" "</span>);<span class="comment">//[Then,,hello,world,!]</span></div><div class="line">        Splitting(<span class="string">"\\W+"</span>);<span class="comment">//[Then, hello, world]</span></div><div class="line">        Splitting(<span class="string">"n\\W+"</span>);<span class="comment">//[The,hello,world!]</span></div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+</li>
+</ul>
+<p>第二个和第三个表达式都用到了<code>\W</code>，它的意思是“非单词字符”（如果<code>W</code>小写，<code>\w</code>，则表示“一个单词字符”）</p>
+<ul>
+<li><code>replace()</code>方法，旨在替换匹配正则表达式的子字符串<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">public</span> class <span class="title">Replacing</span><span class="params">()</span></span>&#123;</div><div class="line"></div><div class="line">    <span class="keyword">static</span> String s = Splitting.knights;</div><div class="line"></div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">replaceFirsting</span><span class="params">(String regex, String str)</span></span>&#123;</div><div class="line">        System.out.println(s.replaceAll(regex, str));</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">replaceAlling</span><span class="params">(String regex, String str)</span></span>&#123;</div><div class="line">        System.out.println(s.replaceAll(regex, str));</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span></span>&#123;</div><div class="line">        repaceFirsting(<span class="string">"o\\w+"</span>,<span class="string">"boy"</span>);<span class="comment">//Then, hello wboy !</span></div><div class="line">        repaceAlling(<span class="string">"en|lo|ld"</span>,<span class="string">"boy"</span>);<span class="comment">//Thboy, helboy worboy !</span></div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+</li>
+</ul>
+<p>第二个表达式用分隔符<code>|</code>，表示“或”。</p>
+<h3 id="创建"><a href="#创建" class="headerlink" title="创建"></a>创建</h3><p>正则表达式的完整构造子列表</p>
+<ul>
+<li>常用字符</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th>表达式</th>
+<th>字符</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>B</td>
+<td>指定字符</td>
+</tr>
+<tr>
+<td>\xhh</td>
+<td>十六进制值为0xhh</td>
+</tr>
+<tr>
+<td>\xhhhhh</td>
+<td>十六进制表示为0xhhhh的Unicode字符</td>
+</tr>
+<tr>
+<td>\t</td>
+<td>制表符Tab</td>
+</tr>
+<tr>
+<td>\n</td>
+<td>换行符</td>
+</tr>
+<tr>
+<td>\r</td>
+<td>回车</td>
+</tr>
+<tr>
+<td>\f</td>
+<td>换页</td>
+</tr>
+<tr>
+<td>\e</td>
+<td>转义（Esc）</td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li>常用字符类</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th>表达式</th>
+<th>字符</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>.</td>
+<td>任意字符</td>
+</tr>
+<tr>
+<td>[abc]</td>
+<td>包含a，b，c的任何字符（同 ‘a或b或c’）</td>
+</tr>
+<tr>
+<td>[^abc]</td>
+<td>除a，b，c之外的任何字符</td>
+</tr>
+<tr>
+<td>[a-zA-Z]</td>
+<td>从a~z和A~Z的任何字符（范围）</td>
+</tr>
+<tr>
+<td>abc[hij]</td>
+<td>同 ‘a或b或c或h或i或j’(合并</td>
+</tr>
+<tr>
+<td>a-z&amp;&amp;[hij]</td>
+<td>任意h，i，j(交集)</td>
+</tr>
+<tr>
+<td>\s</td>
+<td>空白符(空格，tab，换行，回车，换页)</td>
+</tr>
+<tr>
+<td>\S</td>
+<td>非空白符，（同[^\s]）</td>
+</tr>
+<tr>
+<td>\d</td>
+<td>数字0~9</td>
+</tr>
+<tr>
+<td>\D</td>
+<td>非数字，（同[^0-9]）</td>
+</tr>
+<tr>
+<td>\w</td>
+<td>词字符[a-zA-Z0-9]</td>
+</tr>
+<tr>
+<td>\W</td>
+<td>非词字符，（同[^\w]）</td>
+</tr>
+</tbody>
+</table>
+<h3 id="常用"><a href="#常用" class="headerlink" title="常用"></a>常用</h3><h4 id="校验数字的表达式"><a href="#校验数字的表达式" class="headerlink" title="校验数字的表达式"></a>校验数字的表达式</h4><ol>
+<li>数字：<code>(-?\d*)(\.\d+)?</code></li>
+<li>带1-2位小数的正数或负数：<code>^(\-)?\d+(\.\d{1,2})?$</code></li>
+<li>非零的正整数：<code>^[1-9]\d*$</code> 或 <code>^([1-9][0-9]*){1,3}$</code> 或 <code>^\+?[1-9][0-9]*$</code></li>
+</ol>
+<h4 id="校验字符的表达式"><a href="#校验字符的表达式" class="headerlink" title="校验字符的表达式"></a>校验字符的表达式</h4><ol>
+<li>汉字：<code>^[\u4e00-\u9fa5]{0,}$</code></li>
+<li>英文和数字：<code>^[A-Za-z0-9]+$</code> 或 <code>^[A-Za-z0-9]{4,40}$</code></li>
+<li>长度为3-20的所有字符：<code>^.{3,20}$</code></li>
+<li>中文、英文、数字但不包括下划线等符号：<code>^[\u4E00-\u9FA5A-Za-z0-9]+$</code> 或 <code>^[\u4E00-\u9FA5A-Za-z0-9]{2,20}$</code></li>
+<li>可以输入含有<code>^%&amp;&#39;,;=?$\&quot;</code>等字符：<code>[^%&amp;&#39;,;=?$\x22]+</code></li>
+</ol>
+<h4 id="特殊需求表达式"><a href="#特殊需求表达式" class="headerlink" title="特殊需求表达式"></a>特殊需求表达式</h4><ol>
+<li>Email地址：<code>^\w+([-+.]\w+)*@\w+([-.]\w+)*\.\w+([-.]\w+)*$</code></li>
+<li>域名：<code>[a-zA-Z0-9][-a-zA-Z0-9]{0,62}(/.[a-zA-Z0-9][-a-zA-Z0-9]{0,62})+/.?</code></li>
+<li>InternetURL：<code>(h|H)(r|R)(e|E)(f|F) *= *(&#39;|&quot;)?(\w|\\|\/|\.)+(&#39;|&quot;| *|&gt;)?</code></li>
+<li>手机号码：<code>^1[34578]\d{9}$</code> 或 <code>^1(3|4|5|7|8)\d{9}$</code> 或 <code>^1[0-9]{10}$</code></li>
+<li>5 电话号码：<code>^(\(\d{3,4}-)|\d{3.4}-)?\d{7,8}$</code>  </li>
+<li>身份证号(15位、18位数字)：<code>(^\d{15}$)|(^\d{17}([0-9]|X)$)</code></li>
+<li>日期格式：<code>^\d{4}-\d{1,2}-\d{1,2}</code></li>
+<li>中文字符的正则表达式：<code>[\u4e00-\u9fa5]</code></li>
+<li>空白行的正则表达式：<code>\n\s*\r</code> (可以用来删除空白行)</li>
+<li>首尾空白字符的正则表达式：<code>^\s*|\s*$或(^\s*)|(\s*$)</code>    (可以用来删除行首行尾的空白字符(包括空格、制表符、换页符等等)，非常有用的表达式)</li>
+<li>IP地址：<code>\d+\.\d+\.\d+\.\d+</code>    (提取IP地址时有用)</li>
+<li>中国邮政编码：<code>[1-9]\d{5}(?!\d)</code>    (中国邮政编码为6位数字)</li>
+<li>腾讯QQ号：<code>[1-9][0-9]{4,}</code>    (腾讯QQ号从10000开始)</li>
+</ol>
+
+      
+    </div>
+
+    <div>
+      
+        
+<div id="wechat_subscriber" style="display: block; padding: 10px 0; margin: 20px auto; width: 100%; text-align: center">
+    <img id="wechat_subscriber_qcode" src="/images/wechat-qcode.jpg" alt="Bubblelin wechat" style="width: 200px; max-width: 100%;"/>
+    <div>欢迎订阅微信公众号!</div>
+</div>
+
+
+      
+    </div>
+
+    <div>
+      
+        
+  <div style="padding: 10px 0; margin: 20px auto; width: 90%; text-align: center;">
+    <div>坚持原创技术分享，您的支持将鼓励我继续创作！</div>
+    <button id="rewardButton" disable="enable" onclick="var qr = document.getElementById('QR'); if (qr.style.display === 'none') {qr.style.display='block';} else {qr.style.display='none'}">
+      <span>赏</span>
+    </button>
+    <div id="QR" style="display: none;">
+      
+        <div id="wechat" style="display: inline-block">
+          <img id="wechat_qr" src="/images/wechat-reward-image.jpg" alt="Bubblelin WeChat Pay"/>
+          <p>微信打赏</p>
+        </div>
+      
+      
+    </div>
+  </div>
+
+
+      
+    </div>
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/Java/" rel="tag">#Java</a>
+          
+        </div>
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2017/06/15/解析json对象/" rel="next" title="封装json对象和解析json对象">
+                <i class="fa fa-chevron-left"></i> 封装json对象和解析json对象
+              </a>
+            
+          </div>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+        <!-- JiaThis Button BEGIN -->
+<!-- <div class="jiathis_style">
+  <a class="jiathis_button_tsina"></a>
+  <a class="jiathis_button_tqq"></a>
+  <a class="jiathis_button_weixin"></a>
+  <a class="jiathis_button_cqq"></a>
+  <a class="jiathis_button_douban"></a>
+  <a class="jiathis_button_renren"></a>
+  <a class="jiathis_button_qzone"></a>
+  <a class="jiathis_button_kaixin001"></a>
+  <a class="jiathis_button_copy"></a>
+  <a href="http://www.jiathis.com/share" class="jiathis jiathis_txt jiathis_separator jtico jtico_jiathis" target="_blank"></a>
+  <a class="jiathis_counter_style"></a>
+</div>
+<script type="text/javascript" >
+  var jiathis_config={
+    hideMore:false
+  }
+</script>
+<script type="text/javascript" src="http://v3.jiathis.com/code/jia.js" charset="utf-8"></script> -->
+<!-- JiaThis Button END -->
+<!-- JiaThis Button BEGIN -->
+<div class="jiathis_style"><span class="jiathis_txt">分享到：</span>
+<a class="jiathis_button_tsina"></a>
+<a class="jiathis_button_weixin"></a>
+<a class="jiathis_button_cqq"></a>
+<a href="http://www.jiathis.com/share" class="jiathis jiathis_txt jiathis_separator jtico jtico_jiathis" target="_blank"></a>
+<a class="jiathis_counter_style"></a>
+</div>
+<script type="text/javascript" >
+var jiathis_config={
+	siteNum:5,
+	sm:"weixin,qzone,tsina,fb,twitter",
+	summary:"",
+	pic:"https://bubblelin.github.io/images/avatar.png",
+	ralateuid:{
+		"tsina":"雨亦奇lin"
+	},
+	shortUrl:true,
+	hideMore:false
+}
+</script>
+<script type="text/javascript" src="http://v3.jiathis.com/code_mini/jia.js" charset="utf-8"></script>
+<!-- JiaThis Button END -->
+
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel ">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/images/avatar.png"
+               alt="Bubblelin" />
+          <p class="site-author-name" itemprop="name">Bubblelin</p>
+          <p class="site-description motion-element" itemprop="description">A  little  effort  every  day</p>
+        </div>
+        <nav class="site-state motion-element">
+          <div class="site-state-item site-state-posts">
+            <a href="/archives">
+              <span class="site-state-item-count">18</span>
+              <span class="site-state-item-name">日志</span>
+            </a>
+          </div>
+
+          
+            <div class="site-state-item site-state-categories">
+              <a href="/categories">
+                <span class="site-state-item-count">4</span>
+                <span class="site-state-item-name">分类</span>
+              </a>
+            </div>
+          
+
+          
+            <div class="site-state-item site-state-tags">
+              <a href="/tags">
+                <span class="site-state-item-count">6</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+            
+              <span class="links-of-author-item">
+                <a href="https://github.com/bubblelin" target="_blank" title="GitHub">
+                  
+                    <i class="fa fa-fw fa-github"></i>
+                  
+                  GitHub
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://weibo.com/bubblelin" target="_blank" title="Weibo">
+                  
+                    <i class="fa fa-fw fa-weibo"></i>
+                  
+                  Weibo
+                </a>
+              </span>
+            
+          
+        </div>
+
+        
+        
+          <div class="cc-license motion-element" itemprop="license">
+            <a href="https://creativecommons.org/licenses/by-nc/4.0/" class="cc-opacity" target="_blank">
+              <img src="/images/cc-by-nc.svg" alt="Creative Commons" />
+            </a>
+          </div>
+        
+
+        
+        
+
+      </section>
+
+      
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+            
+              
+            
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#基础"><span class="nav-number">1.</span> <span class="nav-text">基础</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#正则表达式匹配"><span class="nav-number">1.1.</span> <span class="nav-text">正则表达式匹配</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Java的split和replace方法"><span class="nav-number">1.2.</span> <span class="nav-text">Java的split和replace方法</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#创建"><span class="nav-number">2.</span> <span class="nav-text">创建</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#常用"><span class="nav-number">3.</span> <span class="nav-text">常用</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#校验数字的表达式"><span class="nav-number">3.1.</span> <span class="nav-text">校验数字的表达式</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#校验字符的表达式"><span class="nav-number">3.2.</span> <span class="nav-text">校验字符的表达式</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#特殊需求表达式"><span class="nav-number">3.3.</span> <span class="nav-text">特殊需求表达式</span></a></li></ol></li></ol></div>
+            
+          </div>
+        </section>
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy;  2015 - 
+  <span itemprop="copyrightYear">2017</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Bubblelin</span>
+</div>
+
+<script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+本站访问总量 <span id="busuanzi_value_site_pv"></span> &nbsp|&nbsp
+您是第<span id="busuanzi_value_site_uv"></span>个小伙伴！
+
+        
+
+        
+      </div>
+    </footer>
+
+    <div class="back-to-top">
+      <i class="fa fa-arrow-up"></i>
+    </div>
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+  
+  <script type="text/javascript" src="/vendors/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/vendors/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/vendors/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/vendors/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/vendors/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/vendors/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.0.1"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.0.1"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.0.1"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.0.1"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.0.1"></script>
+
+
+
+  
+
+
+
+  
+
+
+
+
+  
+  
+
+  
+
+  
+
+  
+<script type="text/javascript" async src="//push.zhanzhang.baidu.com/push.js">
+</script>
+
+
+  
+    <script type="text/javascript"
+    color="0,0,255" opacity='0.7' zIndex="-2" count="99" src="//cdn.bootcss.com/canvas-nest.js/1.0.0/canvas-nest.min.js"></script>
+  
+
+  <a href="https://github.com/bubblelin">
+      <img style="position: absolute; top: 0; left: 0; border: 0;"
+      src="/images/68747470733a2f2f73332e616d617a6f6e6177732e636f6d2f6769746875622f726962626f6e732f666f726b6d655f6c6566745f677265656e5f3030373230302e706e67.png"
+      alt="Fork me on GitHub"
+      data-canonical-src="/images/forkme_left_green_007200.png">
+  </a>
+
+</body>
+</html>
