@@ -69,7 +69,7 @@
 <link href="/css/main.css?v=5.0.1" rel="stylesheet" type="text/css" />
 
 
-  <meta name="keywords" content="SQL," />
+  <meta name="keywords" content="Github, Java,Bubblelin" />
 
 
 
@@ -85,34 +85,19 @@
 
 
 
-<meta name="description" content="group by
-什么是分组查询？使用group by子句将表中的数据分成若干组，再对分组之后的数据做统计计算，一般使用聚集函数才使用group by
-
-聚集函数：sum，avg，count，min，max
-
-分组查询的格式
-12345678select  &amp;lt;selectList&amp;gt;,聚集函数from  t_namewhere  条件group by  &amp;lt;selectList&amp;">
+<meta name="description" content="@SpringBootApplication 是Spring Boot的核心注解,它是一个组合注解,源码如下:
+123456789101112131415@Target(ElementType.TYPE)@Retention(RetentionPolicy.RUNTIME)@Documented@Inherited@SpringBootConfiguration@EnableAutoConfi">
 <meta property="og:type" content="article">
-<meta property="og:title" content="SQL分组查询">
-<meta property="og:url" content="https://bubblelin.github.io/2016/09/03/SQL分组查询/index.html">
+<meta property="og:title" content="Spring Boot运行原理">
+<meta property="og:url" content="https://bubblelin.github.io/2018/01/10/Spring Boot运行原理/index.html">
 <meta property="og:site_name" content="Bubblelin's blog">
-<meta property="og:description" content="group by
-什么是分组查询？使用group by子句将表中的数据分成若干组，再对分组之后的数据做统计计算，一般使用聚集函数才使用group by
-
-聚集函数：sum，avg，count，min，max
-
-分组查询的格式
-12345678select  &amp;lt;selectList&amp;gt;,聚集函数from  t_namewhere  条件group by  &amp;lt;selectList&amp;">
-<meta property="og:updated_time" content="2018-01-10T03:20:19.000Z">
+<meta property="og:description" content="@SpringBootApplication 是Spring Boot的核心注解,它是一个组合注解,源码如下:
+123456789101112131415@Target(ElementType.TYPE)@Retention(RetentionPolicy.RUNTIME)@Documented@Inherited@SpringBootConfiguration@EnableAutoConfi">
+<meta property="og:updated_time" content="2018-01-10T03:32:49.000Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="SQL分组查询">
-<meta name="twitter:description" content="group by
-什么是分组查询？使用group by子句将表中的数据分成若干组，再对分组之后的数据做统计计算，一般使用聚集函数才使用group by
-
-聚集函数：sum，avg，count，min，max
-
-分组查询的格式
-12345678select  &amp;lt;selectList&amp;gt;,聚集函数from  t_namewhere  条件group by  &amp;lt;selectList&amp;">
+<meta name="twitter:title" content="Spring Boot运行原理">
+<meta name="twitter:description" content="@SpringBootApplication 是Spring Boot的核心注解,它是一个组合注解,源码如下:
+123456789101112131415@Target(ElementType.TYPE)@Retention(RetentionPolicy.RUNTIME)@Documented@Inherited@SpringBootConfiguration@EnableAutoConfi">
 
 
 
@@ -133,9 +118,9 @@
 
 
 
-  <link rel="canonical" href="https://bubblelin.github.io/2016/09/03/SQL分组查询/"/>
+  <link rel="canonical" href="https://bubblelin.github.io/2018/01/10/Spring Boot运行原理/"/>
 
-  <title> SQL分组查询 | Bubblelin's blog </title>
+  <title> Spring Boot运行原理 | Bubblelin's blog </title>
 </head>
 
 <body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
@@ -295,7 +280,7 @@
             
             
               
-                SQL分组查询
+                Spring Boot运行原理
               
             
           </h1>
@@ -307,30 +292,11 @@
               <i class="fa fa-calendar-o"></i>
             </span>
             <span class="post-meta-item-text">发表于</span>
-            <time itemprop="dateCreated" datetime="2016-09-03T18:25:50+08:00" content="2016-09-03">
-              2016-09-03
+            <time itemprop="dateCreated" datetime="2018-01-10T11:21:24+08:00" content="2018-01-10">
+              2018-01-10
             </time>
           </span>
 
-          
-            <span class="post-category" >
-              &nbsp; | &nbsp;
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-              
-                <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
-                  <a href="/categories/数据库/" itemprop="url" rel="index">
-                    <span itemprop="name">数据库</span>
-                  </a>
-                </span>
-
-                
-                
-
-              
-            </span>
           
 
           
@@ -360,24 +326,8 @@
       
 
       
-        <script src="/assets/js/DPlayer.min.js"> </script><script src="/assets/js/APlayer.min.js"> </script><h3 id="group-by"><a href="#group-by" class="headerlink" title="group by"></a>group by</h3><ul>
-<li><p>什么是分组查询？<br>使用<code>group by</code>子句将表中的数据分成若干组，再对分组之后的数据做统计计算，一般使用<code>聚集函数</code>才使用<code>group by</code></p>
-</li>
-<li><p>聚集函数：<code>sum</code>，<code>avg</code>，<code>count</code>，<code>min</code>，<code>max</code></p>
-</li>
-<li><p>分组查询的格式</p>
-<figure class="highlight sql"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">select</span></div><div class="line">  &lt;selectList&gt;,聚集函数</div><div class="line"><span class="keyword">from</span></div><div class="line">  t_name</div><div class="line"><span class="keyword">where</span></div><div class="line">  条件</div><div class="line"><span class="keyword">group</span> <span class="keyword">by</span></div><div class="line">  &lt;selectList&gt;</div></pre></td></tr></table></figure>
-</li>
-<li><p>注意<br><code>group by</code> 后面的列名的值要有重复性分组才有意义</p>
-</li>
-</ul>
-<h3 id="having"><a href="#having" class="headerlink" title="having"></a>having</h3><ul>
-<li>使用<code>having</code>子句，对分组之后的结果作筛选</li>
-</ul>
-<figure class="highlight sql"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">select</span></div><div class="line">  &lt;selectList&gt;,聚集函数</div><div class="line"><span class="keyword">from</span></div><div class="line">  t_name</div><div class="line"><span class="keyword">where</span></div><div class="line">  条件</div><div class="line"><span class="keyword">group</span> <span class="keyword">by</span></div><div class="line">  &lt;selectList&gt;</div><div class="line"><span class="keyword">having</span></div><div class="line">  组函数</div></pre></td></tr></table></figure>
-<ul>
-<li>注意<br>不在<code>where</code>子句中使用<code>组函数</code>；<br>应该在<code>having</code>子句中使用<code>组函数</code></li>
-</ul>
+        <script src="/assets/js/DPlayer.min.js"> </script><script src="/assets/js/APlayer.min.js"> </script><pre><code>@SpringBootApplication 是Spring Boot的核心注解,它是一个组合注解,源码如下:
+</code></pre><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div></pre></td><td class="code"><pre><div class="line"><span class="meta">@Target</span>(ElementType.TYPE)</div><div class="line"><span class="meta">@Retention</span>(RetentionPolicy.RUNTIME)</div><div class="line"><span class="meta">@Documented</span></div><div class="line"><span class="meta">@Inherited</span></div><div class="line"><span class="meta">@SpringBootConfiguration</span></div><div class="line"><span class="meta">@EnableAutoConfiguration</span></div><div class="line"><span class="meta">@ComponentScan</span>(excludeFilters = &#123;</div><div class="line">		<span class="meta">@Filter</span>(type = FilterType.CUSTOM, classes = TypeExcludeFilter.class),</div><div class="line">		<span class="meta">@Filter</span>(type = FilterType.CUSTOM, classes = AutoConfigurationExcludeFilter.class) &#125;)</div><div class="line"><span class="keyword">public</span> <span class="meta">@interface</span> SpringBootApplication &#123;</div><div class="line">	Class&lt;?&gt;[] exclude() <span class="keyword">default</span> &#123;&#125;;</div><div class="line">	String[] excludeName() <span class="keyword">default</span> &#123;&#125;;</div><div class="line">	String[] scanBasePackages() <span class="keyword">default</span> &#123;&#125;;</div><div class="line">	Class&lt;?&gt;[] scanBasePackageClasses() <span class="keyword">default</span> &#123;&#125;;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
 
       
     </div>
@@ -419,28 +369,18 @@
 
     <footer class="post-footer">
       
-        <div class="post-tags">
-          
-            <a href="/tags/SQL/" rel="tag">#SQL</a>
-          
-        </div>
-      
 
       
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2016/09/01/JavaWeb开发掌握的技能/" rel="next" title="JavaWeb开发掌握的技能">
-                <i class="fa fa-chevron-left"></i> JavaWeb开发掌握的技能
+              <a href="/2017/06/20/Java中的字符串和表达式/" rel="next" title="字符串和正则表达式">
+                <i class="fa fa-chevron-left"></i> 字符串和正则表达式
               </a>
             
           </div>
 
           <div class="post-nav-prev post-nav-item">
-            
-              <a href="/2016/09/03/SQL子查询/" rel="prev" title="SQL子查询基于MySQL">
-                SQL子查询基于MySQL <i class="fa fa-chevron-right"></i>
-              </a>
             
           </div>
         </div>
@@ -626,7 +566,7 @@ var jiathis_config={
               
             
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#group-by"><span class="nav-number">1.</span> <span class="nav-text">group by</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#having"><span class="nav-number">2.</span> <span class="nav-text">having</span></a></li></ol></div>
+              <p class="post-toc-empty">此文章未包含目录</p>
             
           </div>
         </section>

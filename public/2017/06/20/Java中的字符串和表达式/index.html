@@ -91,7 +91,7 @@
 <meta property="og:url" content="https://bubblelin.github.io/2017/06/20/Java中的字符串和表达式/index.html">
 <meta property="og:site_name" content="Bubblelin's blog">
 <meta property="og:description" content="基础正则表达式匹配&amp;emsp;&amp;emsp;一般来说，正则表达式就是以某种方式来描述字符串。例如，“要找一个数字，他可能有一个负号在最前面”，则用-?表示。&amp;emsp;&amp;emsp;在正则表达式中，\d表示一位数字。但在Java中，需要用\\表示后面的字符有特殊的意义，所以一位数字应该用\\d表示。&amp;emsp;&amp;emsp;要表示“一个或多个之前的表达式”，应该使用+。例如，“表示一个负号，后面跟着">
-<meta property="og:updated_time" content="2017-06-24T01:49:11.406Z">
+<meta property="og:updated_time" content="2018-01-10T03:20:19.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="字符串和正则表达式">
 <meta name="twitter:description" content="基础正则表达式匹配&amp;emsp;&amp;emsp;一般来说，正则表达式就是以某种方式来描述字符串。例如，“要找一个数字，他可能有一个负号在最前面”，则用-?表示。&amp;emsp;&amp;emsp;在正则表达式中，\d表示一位数字。但在Java中，需要用\\表示后面的字符有特殊的意义，所以一位数字应该用\\d表示。&amp;emsp;&amp;emsp;要表示“一个或多个之前的表达式”，应该使用+。例如，“表示一个负号，后面跟着">
@@ -342,7 +342,7 @@
       
 
       
-        <script src="/assets/js/APlayer.min.js"> </script><script src="/assets/js/DPlayer.min.js"> </script><h3 id="基础"><a href="#基础" class="headerlink" title="基础"></a>基础</h3><h4 id="正则表达式匹配"><a href="#正则表达式匹配" class="headerlink" title="正则表达式匹配"></a>正则表达式匹配</h4><p>&emsp;&emsp;一般来说，正则表达式就是以某种方式来描述字符串。例如，“要找一个数字，他<strong>可能</strong>有一个负号在最前面”，则用<code>-?</code>表示。<br>&emsp;&emsp;在正则表达式中，<code>\d</code>表示一位数字。但在Java中，需要用<code>\\</code>表示后面的字符有特殊的意义，所以一位数字应该用<code>\\d</code>表示。<br>&emsp;&emsp;要表示“一个或多个之前的表达式”，应该使用<code>+</code>。例如，“表示一个负号，后面跟着一位或多位数字”，表达式为：<br>&emsp;&emsp;<code>-?\\d+</code></p>
+        <script src="/assets/js/DPlayer.min.js"> </script><script src="/assets/js/APlayer.min.js"> </script><h3 id="基础"><a href="#基础" class="headerlink" title="基础"></a>基础</h3><h4 id="正则表达式匹配"><a href="#正则表达式匹配" class="headerlink" title="正则表达式匹配"></a>正则表达式匹配</h4><p>&emsp;&emsp;一般来说，正则表达式就是以某种方式来描述字符串。例如，“要找一个数字，他<strong>可能</strong>有一个负号在最前面”，则用<code>-?</code>表示。<br>&emsp;&emsp;在正则表达式中，<code>\d</code>表示一位数字。但在Java中，需要用<code>\\</code>表示后面的字符有特殊的意义，所以一位数字应该用<code>\\d</code>表示。<br>&emsp;&emsp;要表示“一个或多个之前的表达式”，应该使用<code>+</code>。例如，“表示一个负号，后面跟着一位或多位数字”，表达式为：<br>&emsp;&emsp;<code>-?\\d+</code></p>
 <p>&emsp;&emsp;检查一个String是否匹配如上所诉的正则表达式<br><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">IntegerMatch</span></span>&#123;</div><div class="line"></div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span></span>&#123;</div><div class="line">        System.out.println(<span class="string">"-1234"</span>.matches(<span class="string">"-?\\d+"</span>));<span class="comment">//true</span></div><div class="line">        System.out.println(<span class="string">"1234"</span>.matches(<span class="string">"-?\\d+"</span>));<span class="comment">//true</span></div><div class="line">        System.out.println(<span class="string">"+1234"</span>.matches(<span class="string">"-?\\d+"</span>));<span class="comment">//false</span></div><div class="line">        System.out.println(<span class="string">"+1234"</span>.matches(<span class="string">"(-|\\+)?\\d+"</span>));<span class="comment">//true</span></div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
 <p>前面两个字符串满足对应的正则表达式，匹配成功。第三个字符串开头<code>+</code>，它也是一个合法的字符，但对应的正则表达式不匹配。正则表达式应该描述为“可能以一个加号或减号开头”。在正则表达中，括号<code>()</code>具有分组的效果，而竖线<code>|</code>则表示“或”操作，表达式为：<br>&emsp;&emsp;<code>(-|\\+)?\\d+</code><br>这个正则表达式表示“字符串的起始字符<strong>可能</strong>是一个<code>-</code>或<code>+</code>，或者二者皆没有（因为后面跟着<code>?</code>修饰符），另外字符<code>+</code>在正则表达式中有特殊意义，所以需要用<code>\\</code>转义”。</p>
 <h4 id="Java的split和replace方法"><a href="#Java的split和replace方法" class="headerlink" title="Java的split和replace方法"></a>Java的split和replace方法</h4><ul>
@@ -549,6 +549,10 @@
 
           <div class="post-nav-prev post-nav-item">
             
+              <a href="/2018/01/10/Spring Boot运行原理/" rel="prev" title="Spring Boot运行原理">
+                Spring Boot运行原理 <i class="fa fa-chevron-right"></i>
+              </a>
+            
           </div>
         </div>
       
@@ -661,7 +665,7 @@ var jiathis_config={
         <nav class="site-state motion-element">
           <div class="site-state-item site-state-posts">
             <a href="/archives">
-              <span class="site-state-item-count">18</span>
+              <span class="site-state-item-count">19</span>
               <span class="site-state-item-name">日志</span>
             </a>
           </div>
@@ -752,7 +756,7 @@ var jiathis_config={
         <div class="copyright" >
   
   &copy;  2015 - 
-  <span itemprop="copyrightYear">2017</span>
+  <span itemprop="copyrightYear">2018</span>
   <span class="with-love">
     <i class="fa fa-heart"></i>
   </span>
