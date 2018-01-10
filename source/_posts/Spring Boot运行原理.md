@@ -1,7 +1,8 @@
 ---
 title: Spring Boot运行原理
 date: 2018-01-10 11:21:24
-tags:
+categories: 编程  
+tags: [Java]  
 ---
 
     @SpringBootApplication 是Spring Boot的核心注解,它是一个组合注解,源码如下:
