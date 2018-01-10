@@ -16,7 +16,7 @@ comments: true
 >喜欢听音乐，喜欢听jay的歌曲，to enjoy
 
 ![Alt text](http://ww3.sinaimg.cn/large/6a3d492dgw1eo14c1qlg3j218g0tktgw.jpg)
-{% aplayer "爱情废柴" "周杰伦" " http://sc1.111ttt.com/2016/1/06/24/199240143042.mp3" %}
+<!-- {% aplayer "爱情废柴" "周杰伦" " http://sc1.111ttt.com/2016/1/06/24/199240143042.mp3" %} -->
 
 ## 歌词精选
 
